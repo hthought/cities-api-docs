@@ -21,6 +21,42 @@ meta:
 
 # Introduction
 
+```shell
+# Get cities in a country
+curl "https://cities-api.p.rapidapi.com/cities?country=US&limit=5" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+// Quick example - search cities
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/cities?country=US&limit=5',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+# Quick example - search cities
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/cities',
+    params={'country': 'US', 'limit': 5},
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
 Welcome to the **Cities API** — the most comprehensive geographic data API available.
 
 With **85+ endpoints**, we provide everything you need for location-based applications:
