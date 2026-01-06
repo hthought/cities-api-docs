@@ -21,6 +21,18 @@ meta:
 
 # Introduction
 
+```
+╔═══════════════════════════════════════════╗
+║                                           ║
+║         Welcome to Cities API             ║
+║                                           ║
+║     3+ million cities worldwide           ║
+║     85+ endpoints                         ║
+║     Comprehensive geographic data         ║
+║                                           ║
+╚═══════════════════════════════════════════╝
+```
+
 Welcome to the **Cities API** — the most comprehensive geographic data API available.
 
 With **85+ endpoints**, we provide everything you need for location-based applications:
