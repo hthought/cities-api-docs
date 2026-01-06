@@ -502,31 +502,6 @@ Find geographic midpoint between cities.
 
 `GET /cities/midpoint`
 
-## Autocomplete
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/autocomplete?q=par" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "suggestions": [
-    { "id": 2988507, "name": "Paris", "country": "FR" },
-    { "id": 1642911, "name": "Paramaribo", "country": "SR" }
-  ]
-}
-```
-
-Fast typeahead search for autocomplete widgets.
-
-### HTTP Request
-
-`GET /cities/autocomplete`
-
 ## Reverse Geocode
 
 ```shell
