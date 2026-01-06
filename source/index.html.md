@@ -26,20 +26,21 @@ meta:
 ║                                           ║
 ║         Welcome to Cities API             ║
 ║                                           ║
-║     5+ million cities worldwide           ║
+║     13+ million geographic features       ║
 ║     85+ endpoints                         ║
-║     Comprehensive geographic data         ║
+║     Cities, lakes, mountains & more       ║
 ║                                           ║
 ╚═══════════════════════════════════════════╝
 ```
 
 Welcome to the **Cities API** — the most comprehensive geographic data API available.
 
-With **85+ endpoints**, we provide everything you need for location-based applications:
+With **13+ million features** and **85+ endpoints**, we provide everything you need for location-based applications:
 
 | Feature | Description |
 |---------|-------------|
 | **City Data** | Search, filter, and explore 5+ million cities worldwide |
+| **Places** | Lakes, rivers, mountains, parks, and more (13M+ features) |
 | **Country Intelligence** | Detailed country info including neighbors, stats, and memberships |
 | **Time & Astronomy** | Timezones, local times, sun/moon rise and set times |
 | **Travel Data** | Airports, seaports, climate zones, electrical standards |
@@ -612,6 +613,122 @@ Calculate route through multiple cities.
 ### HTTP Request
 
 `GET /cities/route`
+
+# Places
+
+The `/places` endpoint provides access to **all 13+ million geographic features** in our database, including lakes, rivers, mountains, parks, and more.
+
+## Feature Classes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/feature-classes" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "data": [
+    { "class": "P", "name": "Populated Places", "description": "Cities, towns, villages", "count": 5185603 },
+    { "class": "H", "name": "Hydrographic", "description": "Lakes, rivers, streams", "count": 2603985 },
+    { "class": "S", "name": "Spots/Buildings", "description": "Airports, schools, churches", "count": 2536020 },
+    { "class": "T", "name": "Terrain", "description": "Mountains, hills, valleys", "count": 1827421 },
+    { "class": "L", "name": "Parks/Areas", "description": "Parks, reserves, areas", "count": 491455 }
+  ],
+  "total": 13383829
+}
+```
+
+Get all available feature classes and their counts.
+
+### HTTP Request
+
+`GET /feature-classes`
+
+## Search Places
+
+```shell
+# Find lakes in the US
+curl "https://cities-api.p.rapidapi.com/places?country=US&class=H&featureCode=LK&limit=5" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```shell
+# Find mountains in Switzerland
+curl "https://cities-api.p.rapidapi.com/places?country=CH&class=T&featureCode=MT&limit=5" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "data": [
+    {
+      "id": 5554072,
+      "name": "Lake Tahoe",
+      "latitude": 39.09973,
+      "longitude": -120.03283,
+      "countryCode": "US",
+      "featureClass": "H",
+      "featureCode": "LK",
+      "elevation": 1899
+    }
+  ]
+}
+```
+
+Search any geographic feature by class and type.
+
+### HTTP Request
+
+`GET /places`
+
+### Query Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `country` | Yes* | ISO country code (required unless class/featureCode specified) |
+| `class` | No | Feature class: P, H, T, S, L, A, V, R, U |
+| `featureCode` | No | Specific feature code: LK (lake), MT (mountain), etc. |
+| `q` | No | Search by name (requires class or featureCode) |
+| `minElevation` | No | Minimum elevation in meters |
+| `maxElevation` | No | Maximum elevation in meters |
+
+### Common Feature Codes
+
+| Code | Class | Description |
+|------|-------|-------------|
+| `LK` | H | Lake |
+| `STM` | H | Stream/River |
+| `RSV` | H | Reservoir |
+| `BAY` | H | Bay |
+| `GLCR` | H | Glacier |
+| `MT` | T | Mountain |
+| `MTS` | T | Mountains (range) |
+| `HLL` | T | Hill |
+| `VLC` | T | Volcano |
+| `ISL` | T | Island |
+| `BCH` | T | Beach |
+| `PRK` | L | Park |
+
+## Get Place
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5554072" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get detailed information about any geographic feature by ID.
+
+### HTTP Request
+
+`GET /places/:id`
 
 # Countries
 
