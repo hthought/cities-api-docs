@@ -1,0 +1,1599 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta
+            name="description"
+            content="Cities API - The most comprehensive geographic data API with 85+ endpoints"
+        >
+    <title>Cities API Documentation</title>
+
+    <style media="screen">
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cpf {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s, .highlight .sa, .highlight .dl {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf, .highlight .fm {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv, .highlight .vm {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #f92672;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <style media="print">
+      * {
+        -webkit-transition:none!important;
+        transition:none!important;
+      }
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #586e75;
+}
+.highlight .err {
+  color: #002b36;
+  background-color: #dc322f;
+}
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cpf, .highlight .c1, .highlight .cs {
+  color: #657b83;
+}
+.highlight .cp {
+  color: #b58900;
+}
+.highlight .nt {
+  color: #b58900;
+}
+.highlight .o, .highlight .ow {
+  color: #93a1a1;
+}
+.highlight .p, .highlight .pi {
+  color: #93a1a1;
+}
+.highlight .gi {
+  color: #859900;
+}
+.highlight .gd {
+  color: #dc322f;
+}
+.highlight .gh {
+  color: #268bd2;
+  background-color: #002b36;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #6c71c4;
+}
+.highlight .kc {
+  color: #cb4b16;
+}
+.highlight .kt {
+  color: #cb4b16;
+}
+.highlight .kd {
+  color: #cb4b16;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #859900;
+}
+.highlight .sa {
+  color: #6c71c4;
+}
+.highlight .sr {
+  color: #2aa198;
+}
+.highlight .si {
+  color: #d33682;
+}
+.highlight .se {
+  color: #d33682;
+}
+.highlight .nn {
+  color: #b58900;
+}
+.highlight .nc {
+  color: #b58900;
+}
+.highlight .no {
+  color: #b58900;
+}
+.highlight .na {
+  color: #268bd2;
+}
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx {
+  color: #859900;
+}
+.highlight .ss {
+  color: #859900;
+}
+    </style>
+    <link href="stylesheets/screen-9c19b03a.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print-966d6edc.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all-024da600.js"></script>
+
+    <script>
+      $(function() { setupCodeCopy(); });
+    </script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;javascript&quot;,&quot;python&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar-cad8cdcb.png" alt="" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo-1e815a84.png" class="logo" alt="" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">cURL</a>
+              <a href="#" data-language-name="javascript">JavaScript</a>
+              <a href="#" data-language-name="python">Python</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+          </li>
+          <li>
+            <a href="#pagination" class="toc-h1 toc-link" data-title="Pagination">Pagination</a>
+          </li>
+          <li>
+            <a href="#cities" class="toc-h1 toc-link" data-title="Cities">Cities</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#search-cities" class="toc-h2 toc-link" data-title="Search Cities">Search Cities</a>
+                  </li>
+                  <li>
+                    <a href="#get-city" class="toc-h2 toc-link" data-title="Get City">Get City</a>
+                  </li>
+                  <li>
+                    <a href="#nearby-cities" class="toc-h2 toc-link" data-title="Nearby Cities">Nearby Cities</a>
+                  </li>
+                  <li>
+                    <a href="#city-sun-times" class="toc-h2 toc-link" data-title="City Sun Times">City Sun Times</a>
+                  </li>
+                  <li>
+                    <a href="#city-climate-zone" class="toc-h2 toc-link" data-title="City Climate Zone">City Climate Zone</a>
+                  </li>
+                  <li>
+                    <a href="#city-local-info" class="toc-h2 toc-link" data-title="City Local Info">City Local Info</a>
+                  </li>
+                  <li>
+                    <a href="#city-antipode" class="toc-h2 toc-link" data-title="City Antipode">City Antipode</a>
+                  </li>
+                  <li>
+                    <a href="#city-hemisphere" class="toc-h2 toc-link" data-title="City Hemisphere">City Hemisphere</a>
+                  </li>
+                  <li>
+                    <a href="#city-hierarchy" class="toc-h2 toc-link" data-title="City Hierarchy">City Hierarchy</a>
+                  </li>
+                  <li>
+                    <a href="#population-rank" class="toc-h2 toc-link" data-title="Population Rank">Population Rank</a>
+                  </li>
+                  <li>
+                    <a href="#nearby-airports" class="toc-h2 toc-link" data-title="Nearby Airports">Nearby Airports</a>
+                  </li>
+                  <li>
+                    <a href="#distance-between-cities" class="toc-h2 toc-link" data-title="Distance Between Cities">Distance Between Cities</a>
+                  </li>
+                  <li>
+                    <a href="#bearing" class="toc-h2 toc-link" data-title="Bearing">Bearing</a>
+                  </li>
+                  <li>
+                    <a href="#midpoint" class="toc-h2 toc-link" data-title="Midpoint">Midpoint</a>
+                  </li>
+                  <li>
+                    <a href="#autocomplete" class="toc-h2 toc-link" data-title="Autocomplete">Autocomplete</a>
+                  </li>
+                  <li>
+                    <a href="#reverse-geocode" class="toc-h2 toc-link" data-title="Reverse Geocode">Reverse Geocode</a>
+                  </li>
+                  <li>
+                    <a href="#random-cities" class="toc-h2 toc-link" data-title="Random Cities">Random Cities</a>
+                  </li>
+                  <li>
+                    <a href="#city-extremes" class="toc-h2 toc-link" data-title="City Extremes">City Extremes</a>
+                  </li>
+                  <li>
+                    <a href="#bounding-box" class="toc-h2 toc-link" data-title="Bounding Box">Bounding Box</a>
+                  </li>
+                  <li>
+                    <a href="#batch-lookup" class="toc-h2 toc-link" data-title="Batch Lookup">Batch Lookup</a>
+                  </li>
+                  <li>
+                    <a href="#distance-matrix" class="toc-h2 toc-link" data-title="Distance Matrix">Distance Matrix</a>
+                  </li>
+                  <li>
+                    <a href="#route" class="toc-h2 toc-link" data-title="Route">Route</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#countries" class="toc-h1 toc-link" data-title="Countries">Countries</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-countries" class="toc-h2 toc-link" data-title="List Countries">List Countries</a>
+                  </li>
+                  <li>
+                    <a href="#get-country" class="toc-h2 toc-link" data-title="Get Country">Get Country</a>
+                  </li>
+                  <li>
+                    <a href="#country-neighbors" class="toc-h2 toc-link" data-title="Country Neighbors">Country Neighbors</a>
+                  </li>
+                  <li>
+                    <a href="#electrical-standards" class="toc-h2 toc-link" data-title="Electrical Standards">Electrical Standards</a>
+                  </li>
+                  <li>
+                    <a href="#localization" class="toc-h2 toc-link" data-title="Localization">Localization</a>
+                  </li>
+                  <li>
+                    <a href="#format" class="toc-h2 toc-link" data-title="Format">Format</a>
+                  </li>
+                  <li>
+                    <a href="#calling-codes" class="toc-h2 toc-link" data-title="Calling Codes">Calling Codes</a>
+                  </li>
+                  <li>
+                    <a href="#major-cities" class="toc-h2 toc-link" data-title="Major Cities">Major Cities</a>
+                  </li>
+                  <li>
+                    <a href="#landlocked-countries" class="toc-h2 toc-link" data-title="Landlocked Countries">Landlocked Countries</a>
+                  </li>
+                  <li>
+                    <a href="#island-countries" class="toc-h2 toc-link" data-title="Island Countries">Island Countries</a>
+                  </li>
+                  <li>
+                    <a href="#largest-countries" class="toc-h2 toc-link" data-title="Largest Countries">Largest Countries</a>
+                  </li>
+                  <li>
+                    <a href="#smallest-countries" class="toc-h2 toc-link" data-title="Smallest Countries">Smallest Countries</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#international-organizations" class="toc-h1 toc-link" data-title="International Organizations">International Organizations</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#g7-members" class="toc-h2 toc-link" data-title="G7 Members">G7 Members</a>
+                  </li>
+                  <li>
+                    <a href="#g20-members" class="toc-h2 toc-link" data-title="G20 Members">G20 Members</a>
+                  </li>
+                  <li>
+                    <a href="#brics-members" class="toc-h2 toc-link" data-title="BRICS Members">BRICS Members</a>
+                  </li>
+                  <li>
+                    <a href="#opec-members" class="toc-h2 toc-link" data-title="OPEC Members">OPEC Members</a>
+                  </li>
+                  <li>
+                    <a href="#nato-members" class="toc-h2 toc-link" data-title="NATO Members">NATO Members</a>
+                  </li>
+                  <li>
+                    <a href="#eu-members" class="toc-h2 toc-link" data-title="EU Members">EU Members</a>
+                  </li>
+                  <li>
+                    <a href="#schengen-area" class="toc-h2 toc-link" data-title="Schengen Area">Schengen Area</a>
+                  </li>
+                  <li>
+                    <a href="#commonwealth" class="toc-h2 toc-link" data-title="Commonwealth">Commonwealth</a>
+                  </li>
+                  <li>
+                    <a href="#un-members" class="toc-h2 toc-link" data-title="UN Members">UN Members</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#continents" class="toc-h1 toc-link" data-title="Continents">Continents</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-continents" class="toc-h2 toc-link" data-title="List Continents">List Continents</a>
+                  </li>
+                  <li>
+                    <a href="#get-continent" class="toc-h2 toc-link" data-title="Get Continent">Get Continent</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#timezones" class="toc-h1 toc-link" data-title="Timezones">Timezones</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-timezones" class="toc-h2 toc-link" data-title="List Timezones">List Timezones</a>
+                  </li>
+                  <li>
+                    <a href="#get-timezone" class="toc-h2 toc-link" data-title="Get Timezone">Get Timezone</a>
+                  </li>
+                  <li>
+                    <a href="#timezone-at-location" class="toc-h2 toc-link" data-title="Timezone at Location">Timezone at Location</a>
+                  </li>
+                  <li>
+                    <a href="#time-difference" class="toc-h2 toc-link" data-title="Time Difference">Time Difference</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#airports" class="toc-h1 toc-link" data-title="Airports">Airports</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#http-request-50" class="toc-h2 toc-link" data-title="HTTP Request">HTTP Request</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#seaports" class="toc-h1 toc-link" data-title="Seaports">Seaports</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#http-request-51" class="toc-h2 toc-link" data-title="HTTP Request">HTTP Request</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#capitals" class="toc-h1 toc-link" data-title="Capitals">Capitals</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#http-request-52" class="toc-h2 toc-link" data-title="HTTP Request">HTTP Request</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#currencies" class="toc-h1 toc-link" data-title="Currencies">Currencies</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-currencies" class="toc-h2 toc-link" data-title="List Currencies">List Currencies</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#languages" class="toc-h1 toc-link" data-title="Languages">Languages</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-languages" class="toc-h2 toc-link" data-title="List Languages">List Languages</a>
+                  </li>
+                  <li>
+                    <a href="#get-language" class="toc-h2 toc-link" data-title="Get Language">Get Language</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#postal-codes" class="toc-h1 toc-link" data-title="Postal Codes">Postal Codes</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#list-postal-codes" class="toc-h2 toc-link" data-title="List Postal Codes">List Postal Codes</a>
+                  </li>
+                  <li>
+                    <a href="#lookup-postal-code" class="toc-h2 toc-link" data-title="Lookup Postal Code">Lookup Postal Code</a>
+                  </li>
+                  <li>
+                    <a href="#nearby-postal-codes" class="toc-h2 toc-link" data-title="Nearby Postal Codes">Nearby Postal Codes</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#validation" class="toc-h1 toc-link" data-title="Validation">Validation</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#validate-postal-code" class="toc-h2 toc-link" data-title="Validate Postal Code">Validate Postal Code</a>
+                  </li>
+                  <li>
+                    <a href="#validate-coordinates" class="toc-h2 toc-link" data-title="Validate Coordinates">Validate Coordinates</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#comparison" class="toc-h1 toc-link" data-title="Comparison">Comparison</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#compare-cities" class="toc-h2 toc-link" data-title="Compare Cities">Compare Cities</a>
+                  </li>
+                  <li>
+                    <a href="#compare-countries" class="toc-h2 toc-link" data-title="Compare Countries">Compare Countries</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#reference" class="toc-h1 toc-link" data-title="Reference">Reference</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#feature-codes" class="toc-h2 toc-link" data-title="Feature Codes">Feature Codes</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+          </li>
+          <li>
+            <a href="#rate-limits" class="toc-h1 toc-link" data-title="Rate Limits">Rate Limits</a>
+          </li>
+      </ul>
+        <ul class="toc-footer">
+            <li><a href='https://rapidapi.com/hthought/api/cities-by-api-ninjas'>Subscribe on RapidAPI</a></li>
+            <li><a href='https://github.com/slatedocs/slate'>Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='introduction'>Introduction</h1>
+<p>Welcome to the <strong>Cities API</strong> — the most comprehensive geographic data API available.</p>
+
+<p>With <strong>85+ endpoints</strong>, we provide everything you need for location-based applications:</p>
+
+<table><thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>City Data</strong></td>
+<td>Search, filter, and explore 3+ million cities worldwide</td>
+</tr>
+<tr>
+<td><strong>Country Intelligence</strong></td>
+<td>Detailed country info including neighbors, stats, and memberships</td>
+</tr>
+<tr>
+<td><strong>Time &amp; Astronomy</strong></td>
+<td>Timezones, local times, sun/moon rise and set times</td>
+</tr>
+<tr>
+<td><strong>Travel Data</strong></td>
+<td>Airports, seaports, climate zones, electrical standards</td>
+</tr>
+<tr>
+<td><strong>Localization</strong></td>
+<td>Currencies, languages, date formats, phone codes</td>
+</tr>
+<tr>
+<td><strong>Geopolitical</strong></td>
+<td>G7, G20, BRICS, NATO, OPEC, UN membership data</td>
+</tr>
+</tbody></table>
+
+<p><strong>Why choose Cities API?</strong></p>
+
+<ul>
+<li>3x more endpoints than competitors</li>
+<li>Unique features not found elsewhere (sun times, climate zones, electrical standards)</li>
+<li>All endpoints available on every plan — no feature restrictions</li>
+<li>Simple pricing based on usage, not artificial limits</li>
+</ul>
+<h1 id='authentication'>Authentication</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://cities-api.p.rapidapi.com/cities</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="dl">'</span><span class="s1">X-RapidAPI-Key</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">X-RapidAPI-Host</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">cities-api.p.rapidapi.com</span><span class="dl">'</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s">'https://cities-api.p.rapidapi.com/cities'</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+        <span class="s">'X-RapidAPI-Key'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span>
+        <span class="s">'X-RapidAPI-Host'</span><span class="p">:</span> <span class="s">'cities-api.p.rapidapi.com'</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>All API requests require authentication via RapidAPI. Include these headers with every request:</p>
+
+<table><thead>
+<tr>
+<th>Header</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>X-RapidAPI-Key</code></td>
+<td>Your RapidAPI subscription key</td>
+</tr>
+<tr>
+<td><code>X-RapidAPI-Host</code></td>
+<td><code>cities-api.p.rapidapi.com</code></td>
+</tr>
+</tbody></table>
+<h1 id='pagination'>Pagination</h1><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">],</span><span class="w">
+  </span><span class="nl">"hasMore"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"nextPage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/cities?country=US&amp;offset=25&amp;limit=25"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Most endpoints support pagination:</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Max</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>limit</code></td>
+<td>25</td>
+<td>100</td>
+<td>Results per page</td>
+</tr>
+<tr>
+<td><code>offset</code></td>
+<td>0</td>
+<td>—</td>
+<td>Results to skip</td>
+</tr>
+</tbody></table>
+<h1 id='cities'>Cities</h1><h2 id='search-cities'>Search Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities?country=US&amp;q=New"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span>
+  <span class="dl">'</span><span class="s1">https://cities-api.p.rapidapi.com/cities?country=US&amp;q=New</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">{</span> <span class="na">headers</span><span class="p">:</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">X-RapidAPI-Key</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">YOUR_API_KEY</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">X-RapidAPI-Host</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">cities-api.p.rapidapi.com</span><span class="dl">'</span> <span class="p">}}</span>
+<span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s">'https://cities-api.p.rapidapi.com/cities'</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s">'country'</span><span class="p">:</span> <span class="s">'US'</span><span class="p">,</span> <span class="s">'q'</span><span class="p">:</span> <span class="s">'New'</span><span class="p">},</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">'X-RapidAPI-Key'</span><span class="p">:</span> <span class="s">'YOUR_API_KEY'</span><span class="p">,</span> <span class="s">'X-RapidAPI-Host'</span><span class="p">:</span> <span class="s">'cities-api.p.rapidapi.com'</span><span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.71427</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-74.00597</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"countryCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"population"</span><span class="p">:</span><span class="w"> </span><span class="mi">8804190</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"hasMore"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Search and filter cities worldwide.</p>
+<h3 id='http-request'>HTTP Request</h3>
+<p><code>GET /cities</code></p>
+<h3 id='query-parameters'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>country</code></td>
+<td>Yes*</td>
+<td>ISO country code (required with <code>q</code>)</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>No</td>
+<td>Search query</td>
+</tr>
+<tr>
+<td><code>minPopulation</code></td>
+<td>No</td>
+<td>Minimum population</td>
+</tr>
+<tr>
+<td><code>timezone</code></td>
+<td>No</td>
+<td>Filter by timezone</td>
+</tr>
+</tbody></table>
+<h2 id='get-city'>Get City</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.71427</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-74.00597</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"countryCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"population"</span><span class="p">:</span><span class="w"> </span><span class="mi">8804190</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"elevation"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get detailed city information.</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET /cities/:id</code></p>
+<h2 id='nearby-cities'>Nearby Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/nearby?radius=50"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"nearby"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5099836</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jersey City"</span><span class="p">,</span><span class="w"> </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mf">9.2</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"km"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Find cities within a radius.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET /cities/:id/nearby</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>radius</code></td>
+<td>50</td>
+<td>Radius in km</td>
+</tr>
+</tbody></table>
+<h2 id='city-sun-times'>City Sun Times</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/sun-times?date=2026-06-21"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-06-21"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"sun"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"sunrise"</span><span class="p">:</span><span class="w"> </span><span class="s2">"05:25"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"sunset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20:31"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"solarNoon"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12:58"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dayLength"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15:06"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Calculate sunrise, sunset, and day length for any date.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>GET /cities/:id/sun-times</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>date</code></td>
+<td>Today</td>
+<td>YYYY-MM-DD format</td>
+</tr>
+</tbody></table>
+<h2 id='city-climate-zone'>City Climate Zone</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/climate-zone"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"climate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"zone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cfa"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Humid Subtropical"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hot, humid summers and mild winters"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get Köppen climate classification.</p>
+<h3 id='http-request-5'>HTTP Request</h3>
+<p><code>GET /cities/:id/climate-zone</code></p>
+<h2 id='city-local-info'>City Local Info</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/local-info"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"United States"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timezone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"currentLocalTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-01-06T08:30:00-05:00"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w"> </span><span class="nl">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"$"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"languages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"en-US"</span><span class="p">,</span><span class="w"> </span><span class="s2">"es-US"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get local info including time, currency, and languages.</p>
+<h3 id='http-request-6'>HTTP Request</h3>
+<p><code>GET /cities/:id/local-info</code></p>
+<h2 id='city-antipode'>City Antipode</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/antipode"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"antipode"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-40.71427</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">105.99403</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"onLand"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"nearestCity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Perth"</span><span class="p">,</span><span class="w"> </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mi">2847</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Find the opposite point on Earth.</p>
+<h3 id='http-request-7'>HTTP Request</h3>
+<p><code>GET /cities/:id/antipode</code></p>
+<h2 id='city-hemisphere'>City Hemisphere</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/hemisphere"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"hemisphere"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"northSouth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Northern"</span><span class="p">,</span><span class="w"> </span><span class="nl">"eastWest"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Western"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get hemisphere location.</p>
+<h3 id='http-request-8'>HTTP Request</h3>
+<p><code>GET /cities/:id/hemisphere</code></p>
+<h2 id='city-hierarchy'>City Hierarchy</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/hierarchy"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"hierarchy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"United States"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"region"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NY"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"continent"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NA"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"North America"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get administrative hierarchy.</p>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>GET /cities/:id/hierarchy</code></p>
+<h2 id='population-rank'>Population Rank</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/population-rank"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w"> </span><span class="nl">"population"</span><span class="p">:</span><span class="w"> </span><span class="mi">8804190</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"rank"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"continent"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nl">"world"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get population rankings.</p>
+<h3 id='http-request-10'>HTTP Request</h3>
+<p><code>GET /cities/:id/population-rank</code></p>
+<h2 id='nearby-airports'>Nearby Airports</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/5128581/airports"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"city"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"airports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JFK International"</span><span class="p">,</span><span class="w"> </span><span class="nl">"iataCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JFK"</span><span class="p">,</span><span class="w"> </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mf">19.2</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LaGuardia"</span><span class="p">,</span><span class="w"> </span><span class="nl">"iataCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LGA"</span><span class="p">,</span><span class="w"> </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mf">12.8</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Find airports near a city.</p>
+<h3 id='http-request-11'>HTTP Request</h3>
+<p><code>GET /cities/:id/airports</code></p>
+<h2 id='distance-between-cities'>Distance Between Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/distance?from=5128581&amp;to=2643743"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">5128581</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2643743</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"London"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mf">5570.2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"unit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"km"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Calculate distance between cities.</p>
+<h3 id='http-request-12'>HTTP Request</h3>
+<p><code>GET /cities/distance</code></p>
+<h2 id='bearing'>Bearing</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/bearing?from=5128581&amp;to=2643743"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"London"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"bearing"</span><span class="p">:</span><span class="w"> </span><span class="mf">51.2</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"compassDirection"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NE"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get compass bearing between cities.</p>
+<h3 id='http-request-13'>HTTP Request</h3>
+<p><code>GET /cities/bearing</code></p>
+<h2 id='midpoint'>Midpoint</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/midpoint?city1=5128581&amp;city2=2643743"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Find geographic midpoint between cities.</p>
+<h3 id='http-request-14'>HTTP Request</h3>
+<p><code>GET /cities/midpoint</code></p>
+<h2 id='autocomplete'>Autocomplete</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/autocomplete?q=par"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"suggestions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2988507</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Paris"</span><span class="p">,</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1642911</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Paramaribo"</span><span class="p">,</span><span class="w"> </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SR"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Fast typeahead search for autocomplete widgets.</p>
+<h3 id='http-request-15'>HTTP Request</h3>
+<p><code>GET /cities/autocomplete</code></p>
+<h2 id='reverse-geocode'>Reverse Geocode</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/reverse?latitude=40.7128&amp;longitude=-74.006"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Find nearest city to coordinates.</p>
+<h3 id='http-request-16'>HTTP Request</h3>
+<p><code>GET /cities/reverse</code></p>
+<h2 id='random-cities'>Random Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/random?count=5"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get random cities. Great for games and quizzes.</p>
+<h3 id='http-request-17'>HTTP Request</h3>
+<p><code>GET /cities/random</code></p>
+<h2 id='city-extremes'>City Extremes</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/extremes?country=US"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"extremes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"northernmost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Barrow"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"southernmost"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Hilo"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"highest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Leadville"</span><span class="p">,</span><span class="w"> </span><span class="nl">"elevation"</span><span class="p">:</span><span class="w"> </span><span class="mi">3094</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"mostPopulous"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Find extreme cities (northernmost, highest, etc).</p>
+<h3 id='http-request-18'>HTTP Request</h3>
+<p><code>GET /cities/extremes</code></p>
+<h2 id='bounding-box'>Bounding Box</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/bbox?north=41&amp;south=40&amp;east=-73&amp;west=-75"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Find cities within a geographic box.</p>
+<h3 id='http-request-19'>HTTP Request</h3>
+<p><code>GET /cities/bbox</code></p>
+<h2 id='batch-lookup'>Batch Lookup</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/batch?ids=5128581,2643743,2988507"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get multiple cities in one request.</p>
+<h3 id='http-request-20'>HTTP Request</h3>
+<p><code>GET /cities/batch</code></p>
+<h2 id='distance-matrix'>Distance Matrix</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/distance-matrix?ids=5128581,2643743,2988507"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Calculate distances between all pairs.</p>
+<h3 id='http-request-21'>HTTP Request</h3>
+<p><code>GET /cities/distance-matrix</code></p>
+<h2 id='route'>Route</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/cities/route?ids=5128581,2643743,2988507"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Calculate route through multiple cities.</p>
+<h3 id='http-request-22'>HTTP Request</h3>
+<p><code>GET /cities/route</code></p>
+<h1 id='countries'>Countries</h1><h2 id='list-countries'>List Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get all countries.</p>
+<h3 id='http-request-23'>HTTP Request</h3>
+<p><code>GET /countries</code></p>
+<h2 id='get-country'>Get Country</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/US"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"United States"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"capital"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Washington"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"population"</span><span class="p">:</span><span class="w"> </span><span class="mi">327167434</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"area"</span><span class="p">:</span><span class="w"> </span><span class="mi">9629091</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"phoneCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"languages"</span><span class="p">:</span><span class="w"> </span><span class="s2">"en-US,es-US"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"drivingSide"</span><span class="p">:</span><span class="w"> </span><span class="s2">"right"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get country details.</p>
+<h3 id='http-request-24'>HTTP Request</h3>
+<p><code>GET /countries/:code</code></p>
+<h2 id='country-neighbors'>Country Neighbors</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/FR/neighbors"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FR"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"France"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"neighbors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Germany"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ES"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spain"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"IT"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Italy"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get bordering countries.</p>
+<h3 id='http-request-25'>HTTP Request</h3>
+<p><code>GET /countries/:code/neighbors</code></p>
+<h2 id='electrical-standards'>Electrical Standards</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/US/electrical"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"electrical"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"voltage"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"frequency"</span><span class="p">:</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"plugTypes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"A"</span><span class="p">,</span><span class="w"> </span><span class="s2">"B"</span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Essential for travel apps — get voltage and plug types.</p>
+<h3 id='http-request-26'>HTTP Request</h3>
+<p><code>GET /countries/:code/electrical</code></p>
+<h2 id='localization'>Localization</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/localization/DE"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DE"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Germany"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"localization"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"languages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"de"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"currency"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EUR"</span><span class="p">,</span><span class="w"> </span><span class="nl">"symbol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"€"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="nl">"numberFormat"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"decimalSeparator"</span><span class="p">:</span><span class="w"> </span><span class="s2">","</span><span class="p">,</span><span class="w"> </span><span class="nl">"thousandsSeparator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"."</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get localization settings.</p>
+<h3 id='http-request-27'>HTTP Request</h3>
+<p><code>GET /countries/localization/:code</code></p>
+<h2 id='format'>Format</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/format/JP"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JP"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Japan"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"drivingSide"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"dateFormat"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YYYY/MM/DD"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"measurementSystem"</span><span class="p">:</span><span class="w"> </span><span class="s2">"metric"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get formatting conventions.</p>
+<h3 id='http-request-28'>HTTP Request</h3>
+<p><code>GET /countries/format/:code</code></p>
+<h2 id='calling-codes'>Calling Codes</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/calling/US"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"calling"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"countryCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"+1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"(XXX) XXX-XXXX"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Get phone calling information.</p>
+<h3 id='http-request-29'>HTTP Request</h3>
+<p><code>GET /countries/calling/:code</code></p>
+<h2 id='major-cities'>Major Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/major-cities/JP"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get largest cities in a country.</p>
+<h3 id='http-request-30'>HTTP Request</h3>
+<p><code>GET /countries/major-cities/:code</code></p>
+<h2 id='landlocked-countries'>Landlocked Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/landlocked"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get countries without coastline.</p>
+<h3 id='http-request-31'>HTTP Request</h3>
+<p><code>GET /countries/landlocked</code></p>
+<h2 id='island-countries'>Island Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/islands"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get island nations.</p>
+<h3 id='http-request-32'>HTTP Request</h3>
+<p><code>GET /countries/islands</code></p>
+<h2 id='largest-countries'>Largest Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/largest?by=area"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get largest by area or population.</p>
+<h3 id='http-request-33'>HTTP Request</h3>
+<p><code>GET /countries/largest</code></p>
+<h2 id='smallest-countries'>Smallest Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/smallest?by=area"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get smallest by area or population.</p>
+<h3 id='http-request-34'>HTTP Request</h3>
+<p><code>GET /countries/smallest</code></p>
+<h1 id='international-organizations'>International Organizations</h1>
+<p>Access membership data for major international organizations.</p>
+<h2 id='g7-members'>G7 Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/g7"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"organization"</span><span class="p">:</span><span class="w"> </span><span class="s2">"G7"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"fullName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Group of Seven"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"memberCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"United States"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"JP"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Japan"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-35'>HTTP Request</h3>
+<p><code>GET /countries/g7</code></p>
+<h2 id='g20-members'>G20 Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/g20"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>World&#39;s largest economies.</p>
+<h3 id='http-request-36'>HTTP Request</h3>
+<p><code>GET /countries/g20</code></p>
+<h2 id='brics-members'>BRICS Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/brics"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Including 2024 expansion members.</p>
+<h3 id='http-request-37'>HTTP Request</h3>
+<p><code>GET /countries/brics</code></p>
+<h2 id='opec-members'>OPEC Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/opec"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Oil-exporting countries.</p>
+<h3 id='http-request-38'>HTTP Request</h3>
+<p><code>GET /countries/opec</code></p>
+<h2 id='nato-members'>NATO Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/nato-members"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-39'>HTTP Request</h3>
+<p><code>GET /countries/nato-members</code></p>
+<h2 id='eu-members'>EU Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/eu-members"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>European Union member states.</p>
+<h3 id='http-request-40'>HTTP Request</h3>
+<p><code>GET /countries/eu-members</code></p>
+<h2 id='schengen-area'>Schengen Area</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/schengen"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Passport-free travel zone.</p>
+<h3 id='http-request-41'>HTTP Request</h3>
+<p><code>GET /countries/schengen</code></p>
+<h2 id='commonwealth'>Commonwealth</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/commonwealth"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Commonwealth of Nations members.</p>
+<h3 id='http-request-42'>HTTP Request</h3>
+<p><code>GET /countries/commonwealth</code></p>
+<h2 id='un-members'>UN Members</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/countries/un-members"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>All 193 United Nations member states.</p>
+<h3 id='http-request-43'>HTTP Request</h3>
+<p><code>GET /countries/un-members</code></p>
+<h1 id='continents'>Continents</h1><h2 id='list-continents'>List Continents</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/continents"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AF"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Africa"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AS"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Asia"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EU"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Europe"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-44'>HTTP Request</h3>
+<p><code>GET /continents</code></p>
+<h2 id='get-continent'>Get Continent</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/continents/EU"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-45'>HTTP Request</h3>
+<p><code>GET /continents/:code</code></p>
+<h1 id='timezones'>Timezones</h1><h2 id='list-timezones'>List Timezones</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/timezones"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-46'>HTTP Request</h3>
+<p><code>GET /timezones</code></p>
+<h2 id='get-timezone'>Get Timezone</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/timezones/America%2FNew_York"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/New_York"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"gmtOffset"</span><span class="p">:</span><span class="w"> </span><span class="mi">-5</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"dstOffset"</span><span class="p">:</span><span class="w"> </span><span class="mi">-4</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"currentTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-01-06T08:30:00-05:00"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-47'>HTTP Request</h3>
+<p><code>GET /timezones/:id</code></p>
+<h2 id='timezone-at-location'>Timezone at Location</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/timezone-at?latitude=40.7128&amp;longitude=-74.006"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Get timezone for any coordinates.</p>
+<h3 id='http-request-48'>HTTP Request</h3>
+<p><code>GET /timezone-at</code></p>
+<h2 id='time-difference'>Time Difference</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/time-difference?from=5128581&amp;to=2643743"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"from"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w"> </span><span class="nl">"localTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"08:30"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"to"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"London"</span><span class="p">,</span><span class="w"> </span><span class="nl">"localTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13:30"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"difference"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"hours"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"London is 5 hours ahead"</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-49'>HTTP Request</h3>
+<p><code>GET /time-difference</code></p>
+<h1 id='airports'>Airports</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/airports?country=US"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-50'>HTTP Request</h3>
+<p><code>GET /airports</code></p>
+<h1 id='seaports'>Seaports</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/seaports?country=NL"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-51'>HTTP Request</h3>
+<p><code>GET /seaports</code></p>
+<h1 id='capitals'>Capitals</h1><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/capitals"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>World capital cities.</p>
+<h3 id='http-request-52'>HTTP Request</h3>
+<p><code>GET /capitals</code></p>
+<h1 id='currencies'>Currencies</h1><h2 id='list-currencies'>List Currencies</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/currencies"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-53'>HTTP Request</h3>
+<p><code>GET /currencies</code></p>
+<h1 id='languages'>Languages</h1><h2 id='list-languages'>List Languages</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/languages"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-54'>HTTP Request</h3>
+<p><code>GET /languages</code></p>
+<h2 id='get-language'>Get Language</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/languages/es"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"es"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spanish"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"nativeName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Español"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"countries"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ES"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Spain"</span><span class="w"> </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MX"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mexico"</span><span class="w"> </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-55'>HTTP Request</h3>
+<p><code>GET /languages/:code</code></p>
+<h1 id='postal-codes'>Postal Codes</h1><h2 id='list-postal-codes'>List Postal Codes</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/postal-codes?country=US"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-56'>HTTP Request</h3>
+<p><code>GET /postal-codes</code></p>
+<h2 id='lookup-postal-code'>Lookup Postal Code</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/postal-codes/US/10001"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"postalCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10001"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"placeName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"region"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"latitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.7484</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"longitude"</span><span class="p">:</span><span class="w"> </span><span class="mf">-73.9967</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-57'>HTTP Request</h3>
+<p><code>GET /postal-codes/:country/:code</code></p>
+<h2 id='nearby-postal-codes'>Nearby Postal Codes</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&amp;longitude=-74.006"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div><h3 id='http-request-58'>HTTP Request</h3>
+<p><code>GET /postal-codes/nearby</code></p>
+<h1 id='validation'>Validation</h1><h2 id='validate-postal-code'>Validate Postal Code</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/validate/postal-code/US/10001"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"postalCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10001"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-59'>HTTP Request</h3>
+<p><code>GET /validate/postal-code/:country/:code</code></p>
+<h2 id='validate-coordinates'>Validate Coordinates</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/validate/coordinates?latitude=40.7128&amp;longitude=-74.006"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<blockquote>
+<p>Response:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"valid"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"onLand"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"country"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"US"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"United States"</span><span class="w"> </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"nearestCity"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New York City"</span><span class="p">,</span><span class="w"> </span><span class="nl">"distance"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3 id='http-request-60'>HTTP Request</h3>
+<p><code>GET /validate/coordinates</code></p>
+<h1 id='comparison'>Comparison</h1><h2 id='compare-cities'>Compare Cities</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/compare/cities?ids=5128581,2643743"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Compare multiple cities side by side.</p>
+<h3 id='http-request-61'>HTTP Request</h3>
+<p><code>GET /compare/cities</code></p>
+<h2 id='compare-countries'>Compare Countries</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/compare/countries?codes=US,JP,DE"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>Compare multiple countries.</p>
+<h3 id='http-request-62'>HTTP Request</h3>
+<p><code>GET /compare/countries</code></p>
+<h1 id='reference'>Reference</h1><h2 id='feature-codes'>Feature Codes</h2><div class="highlight"><pre class="highlight shell tab-shell"><code>curl <span class="s2">"https://cities-api.p.rapidapi.com/feature-codes"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Key: YOUR_API_KEY"</span> <span class="se">\</span>
+  <span class="nt">-H</span> <span class="s2">"X-RapidAPI-Host: cities-api.p.rapidapi.com"</span>
+</code></pre></div>
+<p>GeoNames feature codes for filtering.</p>
+<h3 id='http-request-63'>HTTP Request</h3>
+<p><code>GET /feature-codes</code></p>
+<h1 id='errors'>Errors</h1>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Success</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Rate Limited</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server Error</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Error format:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"error"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"City not found"</span><span class="p">,</span><span class="w"> </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">404</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h1 id='rate-limits'>Rate Limits</h1>
+<table><thead>
+<tr>
+<th>Tier</th>
+<th>Requests/Day</th>
+<th>Rate</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Basic</td>
+<td>1,500</td>
+<td>1,000/hr</td>
+</tr>
+<tr>
+<td>Pro</td>
+<td>35,000</td>
+<td>10/sec</td>
+</tr>
+<tr>
+<td>Ultra</td>
+<td>60,000</td>
+<td>20/sec</td>
+</tr>
+<tr>
+<td>Mega</td>
+<td>100,000</td>
+<td>30/sec</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">cURL</a>
+                <a href="#" data-language-name="javascript">JavaScript</a>
+                <a href="#" data-language-name="python">Python</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
