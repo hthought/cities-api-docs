@@ -26,7 +26,7 @@ meta:
 ║                                           ║
 ║         Welcome to Cities API             ║
 ║                                           ║
-║     3+ million cities worldwide           ║
+║     5+ million cities worldwide           ║
 ║     85+ endpoints                         ║
 ║     Comprehensive geographic data         ║
 ║                                           ║
@@ -39,7 +39,7 @@ With **85+ endpoints**, we provide everything you need for location-based applic
 
 | Feature | Description |
 |---------|-------------|
-| **City Data** | Search, filter, and explore 3+ million cities worldwide |
+| **City Data** | Search, filter, and explore 5+ million cities worldwide |
 | **Country Intelligence** | Detailed country info including neighbors, stats, and memberships |
 | **Time & Astronomy** | Timezones, local times, sun/moon rise and set times |
 | **Travel Data** | Airports, seaports, climate zones, electrical standards |
