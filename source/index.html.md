@@ -79,35 +79,72 @@ curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElev
 
 ## Quick Examples
 
-**Find what's nearby:**
+Here are some real scenarios showing how to combine endpoints:
 
-```shell
-# Features within 50km of a place
-curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50"
+### Scenario 1: Planning a Trip to Tokyo
 
-# Only airports near that place
-curl "https://cities-api.p.rapidapi.com/places/5128581/airports"
-```
+You're building a travel app. A user selects Tokyo — now show them everything they need:
 
-**Work with hierarchies:**
+<pre>
+# 1. Get Tokyo's details
+GET /places/1850147
 
-```shell
-# What state/province contains this city?
-curl "https://cities-api.p.rapidapi.com/places/5128581/parent"
+# 2. What's the local time and currency?
+GET /places/1850147/local-info
 
-# What cities are in California?
-curl "https://cities-api.p.rapidapi.com/places/5332921/children?class=P"
-```
+# 3. Find nearby airports
+GET /places/1850147/airports
 
-**Get local information:**
+# 4. When does the sun set on their arrival date?
+GET /places/1850147/sun-times?date=2026-03-15
+</pre>
 
-```shell
-# Sunrise/sunset times
-curl "https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21"
+### Scenario 2: Distance from a City to a Lake
 
-# Local time, currency, language
-curl "https://cities-api.p.rapidapi.com/places/5128581/local-info"
-```
+A user wants to know how far Lake Tahoe is from San Francisco:
+
+<pre>
+# 1. Find Lake Tahoe (it's a lake, class H)
+GET /places?country=US&class=H&q=Tahoe
+→ Returns id: 5554072
+
+# 2. Find San Francisco
+GET /places?country=US&class=P&q=San Francisco
+→ Returns id: 5391959
+
+# 3. Calculate the distance
+GET /places/distance?from=5391959&to=5554072
+→ Returns: 290.4 km
+</pre>
+
+### Scenario 3: Airports Near a Mountain
+
+Find airports near Mount Rainier for a hiking trip:
+
+<pre>
+# 1. Find Mount Rainier (it's terrain, class T)
+GET /places?country=US&class=T&q=Rainier
+→ Returns id: 5808079
+
+# 2. Find airports within 150km
+GET /places/5808079/nearby?featureCode=AIRP&radius=150
+→ Returns: Seattle-Tacoma, Portland, etc.
+</pre>
+
+### Scenario 4: Exploring a Region
+
+Show all the lakes and mountains in Switzerland:
+
+<pre>
+# Lakes in Switzerland
+GET /places?country=CH&class=H&featureCode=LK
+
+# Mountains over 4000m
+GET /places?country=CH&class=T&featureCode=MT&minElevation=4000
+
+# What cities are near the Matterhorn?
+GET /places/2658434/nearby?class=P&radius=50
+</pre>
 
 # Authentication
 
