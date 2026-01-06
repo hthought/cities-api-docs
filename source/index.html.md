@@ -39,7 +39,7 @@ With **13+ million features** and **85+ endpoints**, we provide everything you n
 
 | Feature | Description |
 |---------|-------------|
-| **City Data** | Search, filter, and explore 5+ million cities worldwide |
+| **City Data** | Search, filter, and explore 5 million cities worldwide |
 | **Places** | Lakes, rivers, mountains, parks, and more (13M+ features) |
 | **Country Intelligence** | Detailed country info including neighbors, stats, and memberships |
 | **Time & Astronomy** | Timezones, local times, sun/moon rise and set times |
