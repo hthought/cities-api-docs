@@ -56,13 +56,26 @@ curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElev
 
 | Category | What You Get |
 |----------|--------------|
-| **Places** | 13M+ features: cities, lakes, mountains, parks, airports, and more |
-| **Countries** | 252 countries with metadata, neighbors, stats, and organization memberships |
-| **Timezones** | All timezones with current times and offsets |
-| **Postal Codes** | 1.8M postal codes with coordinates |
-| **Reference Data** | Languages, currencies, feature codes, continents |
-| **Computations** | Distance, bearing, midpoint, sun times, climate zones |
-| **Unit Conversion** | Convert between metric and imperial units |
+| **Places** | 13M+ features: cities, towns, villages, lakes, rivers, mountains, valleys, airports, parks, and more |
+| **Search & Filter** | By country, name, feature class, feature code, population, elevation, bounding box |
+| **Nearby & Proximity** | Find features near any place or coordinates, reverse geocoding |
+| **Hierarchy** | Parent/child relationships, administrative divisions |
+| **Geographic Calculations** | Distance, bearing, midpoint, route planning, along-route search, antipode, hemisphere |
+| **Time & Astronomy** | Local time, UTC offset, timezone lookup, sun/moon rise/set times, time difference |
+| **Climate** | Köppen climate classification for any location |
+| **Travel** | Nearby airports, seaports, shipping hubs |
+| **Local Info** | Combined timezone, currency, language, phone code for any place |
+| **Population** | Rankings by country, region, and world |
+| **Alternate Names** | Translations and alternate names in 40+ languages |
+| **Countries** | 252 countries with neighbors, stats, electrical standards, driving side, formats |
+| **Organizations** | G7, G20, BRICS, OPEC, NATO, EU, Schengen, Commonwealth, UN membership |
+| **Timezones** | 418 timezones with current times, DST info, and offsets |
+| **Postal Codes** | 1.8M postal codes with coordinates and nearby search |
+| **Airports & Seaports** | Standalone search by country and name |
+| **Capitals** | All world capital cities |
+| **Reference Data** | Feature classes, feature codes, languages, currencies, continents, phone codes |
+| **Validation** | Coordinate validation, land/water detection, postal code validation |
+| **Unit Conversion** | Distance, elevation, area, temperature, speed, coordinates (metric ↔ imperial) |
 
 ## Quick Examples
 
