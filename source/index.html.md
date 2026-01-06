@@ -52,6 +52,51 @@ curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElev
 
 **Consistent responses everywhere.** Every list endpoint returns the same structure: `data`, `hasMore`, and `nextPage`. Every error follows the same format. No surprises.
 
+## Quick Examples
+
+Real scenarios showing how to combine endpoints:
+
+### Scenario 1: Planning a Trip to Tokyo
+
+A user types "Tokyo" — show them everything they need:
+
+| Step | Endpoint | Result |
+|------|----------|--------|
+| 1 | `/places?country=JP&class=P&q=Tokyo` | Find Tokyo → id: 1850147 |
+| 2 | `/places/1850147/local-info` | Time zone, currency (JPY), language |
+| 3 | `/places/1850147/airports` | Narita, Haneda airports |
+| 4 | `/places/1850147/sun-times?date=2026-03-15` | Sunrise 5:52, sunset 17:49 |
+
+### Scenario 2: Distance from San Francisco to Lake Tahoe
+
+User wants to know how far a lake is from a city:
+
+| Step | Endpoint | Result |
+|------|----------|--------|
+| 1 | `/places?country=US&class=P&q=San Francisco` | Find city → id: 5391959 |
+| 2 | `/places?country=US&class=H&q=Tahoe` | Find lake → id: 5554072 |
+| 3 | `/places/distance?from=5391959&to=5554072` | **290.4 km** |
+
+### Scenario 3: Airports Near Mount Rainier
+
+Planning a hiking trip, need to find the closest airport:
+
+| Step | Endpoint | Result |
+|------|----------|--------|
+| 1 | `/places?country=US&class=T&q=Rainier` | Find mountain → id: 5808079 |
+| 2 | `/places/5808079/nearby?featureCode=AIRP&radius=150` | Seattle-Tacoma (95km), Portland (143km) |
+
+### Scenario 4: Exploring Switzerland
+
+Find all lakes and high mountains in a country:
+
+| Step | Endpoint | Result |
+|------|----------|--------|
+| 1 | `/places?country=CH&class=H&featureCode=LK` | 500+ lakes |
+| 2 | `/places?country=CH&class=T&featureCode=MT&minElevation=4000` | 48 peaks over 4000m |
+| 3 | `/places?country=CH&class=T&q=Matterhorn` | Find Matterhorn → id: 2658434 |
+| 4 | `/places/2658434/nearby?class=P&radius=30` | Zermatt (6km), Täsch (12km) |
+
 ## What's Included
 
 | Category | What You Get |
@@ -76,75 +121,6 @@ curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElev
 | **Reference Data** | Feature classes, feature codes, languages, currencies, continents, phone codes |
 | **Validation** | Coordinate validation, land/water detection, postal code validation |
 | **Unit Conversion** | Distance, elevation, area, temperature, speed, coordinates (metric ↔ imperial) |
-
-## Quick Examples
-
-Here are some real scenarios showing how to combine endpoints:
-
-### Scenario 1: Planning a Trip to Tokyo
-
-You're building a travel app. A user selects Tokyo — now show them everything they need:
-
-<pre>
-# 1. Get Tokyo's details
-GET /places/1850147
-
-# 2. What's the local time and currency?
-GET /places/1850147/local-info
-
-# 3. Find nearby airports
-GET /places/1850147/airports
-
-# 4. When does the sun set on their arrival date?
-GET /places/1850147/sun-times?date=2026-03-15
-</pre>
-
-### Scenario 2: Distance from a City to a Lake
-
-A user wants to know how far Lake Tahoe is from San Francisco:
-
-<pre>
-# 1. Find Lake Tahoe (it's a lake, class H)
-GET /places?country=US&class=H&q=Tahoe
-→ Returns id: 5554072
-
-# 2. Find San Francisco
-GET /places?country=US&class=P&q=San Francisco
-→ Returns id: 5391959
-
-# 3. Calculate the distance
-GET /places/distance?from=5391959&to=5554072
-→ Returns: 290.4 km
-</pre>
-
-### Scenario 3: Airports Near a Mountain
-
-Find airports near Mount Rainier for a hiking trip:
-
-<pre>
-# 1. Find Mount Rainier (it's terrain, class T)
-GET /places?country=US&class=T&q=Rainier
-→ Returns id: 5808079
-
-# 2. Find airports within 150km
-GET /places/5808079/nearby?featureCode=AIRP&radius=150
-→ Returns: Seattle-Tacoma, Portland, etc.
-</pre>
-
-### Scenario 4: Exploring a Region
-
-Show all the lakes and mountains in Switzerland:
-
-<pre>
-# Lakes in Switzerland
-GET /places?country=CH&class=H&featureCode=LK
-
-# Mountains over 4000m
-GET /places?country=CH&class=T&featureCode=MT&minElevation=4000
-
-# What cities are near the Matterhorn?
-GET /places/2658434/nearby?class=P&radius=50
-</pre>
 
 # Authentication
 
