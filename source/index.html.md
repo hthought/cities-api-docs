@@ -16,66 +16,112 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Cities API - The most comprehensive geographic data API with 85+ endpoints
+    content: Cities API - Geographic data API with 86 endpoints covering places, countries, timezones, and more
 ---
 
 # Introduction
 
+Welcome to the **Cities API** — a geographic data API built on a simple but powerful idea: **everything is a place**.
+
+Cities, lakes, mountains, airports, parks — they're all geographic features with coordinates, names, and relationships. Instead of treating each type differently, we give you one unified way to work with all 13+ million features in our database.
+
+## What This Means For You
+
+**Mix and match any features.** Calculate the distance from a city to a lake. Find airports near a mountain. Get all features within a bounding box regardless of type.
+
+```shell
+# Distance from New York City to Lake Tahoe
+curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=5554072"
+
+# Find airports within 100km of Mount Rainier
+curl "https://cities-api.p.rapidapi.com/places/5808079/nearby?featureCode=AIRP&radius=100"
 ```
-╔═══════════════════════════════════════════╗
-║                                           ║
-║         Welcome to Cities API             ║
-║                                           ║
-║     13+ million geographic features       ║
-║     85+ endpoints                         ║
-║     Cities, lakes, mountains & more       ║
-║                                           ║
-╚═══════════════════════════════════════════╝
+
+**Filter with precision, not limitations.** Use `class` to filter by category (populated places, water features, terrain) or `featureCode` for specific types (lakes, rivers, mountains, volcanoes). Exclude what you don't want with `excludeCodes`.
+
+```shell
+# Cities in Japan (class P = populated places)
+curl "https://cities-api.p.rapidapi.com/places?country=JP&class=P"
+
+# Lakes in Switzerland
+curl "https://cities-api.p.rapidapi.com/places?country=CH&class=H&featureCode=LK"
+
+# Mountains over 4000m in France
+curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElevation=4000"
 ```
 
-Welcome to the **Cities API** — the most comprehensive geographic data API available.
+**Consistent responses everywhere.** Every list endpoint returns the same structure: `data`, `hasMore`, and `nextPage`. Every error follows the same format. No surprises.
 
-With **13+ million features** and **85+ endpoints**, we provide everything you need for location-based applications:
+## What's Included
 
-| Feature | Description |
-|---------|-------------|
-| **City Data** | Search, filter, and explore 5 million cities worldwide |
-| **Places** | Lakes, rivers, mountains, parks, and more (13M+ features) |
-| **Country Intelligence** | Detailed country info including neighbors, stats, and memberships |
-| **Time & Astronomy** | Timezones, local times, sun/moon rise and set times |
-| **Travel Data** | Airports, seaports, climate zones, electrical standards |
-| **Localization** | Currencies, languages, date formats, phone codes |
-| **Geopolitical** | G7, G20, BRICS, NATO, OPEC, UN membership data |
+| Category | What You Get |
+|----------|--------------|
+| **Places** | 13M+ features: cities, lakes, mountains, parks, airports, and more |
+| **Countries** | 252 countries with metadata, neighbors, stats, and organization memberships |
+| **Timezones** | All timezones with current times and offsets |
+| **Postal Codes** | 1.8M postal codes with coordinates |
+| **Reference Data** | Languages, currencies, feature codes, continents |
+| **Computations** | Distance, bearing, midpoint, sun times, climate zones |
+| **Unit Conversion** | Convert between metric and imperial units |
 
-**Why choose Cities API?**
+## Quick Examples
 
-- 3x more endpoints than competitors
-- Unique features not found elsewhere (sun times, climate zones, electrical standards)
-- All endpoints available on every plan — no feature restrictions
-- Simple pricing based on usage, not artificial limits
+**Find what's nearby:**
+
+```shell
+# Features within 50km of a place
+curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50"
+
+# Only airports near that place
+curl "https://cities-api.p.rapidapi.com/places/5128581/airports"
+```
+
+**Work with hierarchies:**
+
+```shell
+# What state/province contains this city?
+curl "https://cities-api.p.rapidapi.com/places/5128581/parent"
+
+# What cities are in California?
+curl "https://cities-api.p.rapidapi.com/places/5332921/children?class=P"
+```
+
+**Get local information:**
+
+```shell
+# Sunrise/sunset times
+curl "https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21"
+
+# Local time, currency, language
+curl "https://cities-api.p.rapidapi.com/places/5128581/local-info"
+```
 
 # Authentication
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities" \
+curl "https://cities-api.p.rapidapi.com/places?country=US&class=P" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ```javascript
-const response = await fetch('https://cities-api.p.rapidapi.com/cities', {
-  headers: {
-    'X-RapidAPI-Key': 'YOUR_API_KEY',
-    'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places?country=US&class=P',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-});
+);
 ```
 
 ```python
 import requests
 
 response = requests.get(
-    'https://cities-api.p.rapidapi.com/cities',
+    'https://cities-api.p.rapidapi.com/places',
+    params={'country': 'US', 'class': 'P'},
     headers={
         'X-RapidAPI-Key': 'YOUR_API_KEY',
         'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
@@ -83,11 +129,11 @@ response = requests.get(
 )
 ```
 
-All API requests require authentication via RapidAPI. Include these headers with every request:
+All requests require authentication via RapidAPI:
 
-| Header | Description |
-|--------|-------------|
-| `X-RapidAPI-Key` | Your RapidAPI subscription key |
+| Header | Value |
+|--------|-------|
+| `X-RapidAPI-Key` | Your API key |
 | `X-RapidAPI-Host` | `cities-api.p.rapidapi.com` |
 
 # Pagination
@@ -96,38 +142,53 @@ All API requests require authentication via RapidAPI. Include these headers with
 {
   "data": [...],
   "hasMore": true,
-  "nextPage": "/cities?country=US&offset=25&limit=25"
+  "nextPage": "/places?country=US&class=P&offset=25&limit=25"
 }
 ```
 
-Most endpoints support pagination:
+List endpoints return paginated results:
 
 | Parameter | Default | Max | Description |
 |-----------|---------|-----|-------------|
 | `limit` | 25 | 100 | Results per page |
 | `offset` | 0 | — | Results to skip |
 
-# Cities
+The response includes `hasMore` (boolean) and `nextPage` (URL or null) for easy iteration.
 
-## Search Cities
+# Places
+
+The `/places` endpoint is the core of the API. It provides access to all 13+ million geographic features.
+
+## Feature Classes
+
+| Class | Name | Examples | Count |
+|-------|------|----------|-------|
+| `P` | Populated Places | Cities, towns, villages | 5.2M |
+| `H` | Hydrographic | Lakes, rivers, streams | 2.6M |
+| `S` | Spots/Buildings | Airports, schools, churches | 2.5M |
+| `T` | Terrain | Mountains, hills, valleys | 1.8M |
+| `L` | Parks/Areas | Parks, reserves, regions | 0.5M |
+| `A` | Administrative | Countries, states, counties | 0.5M |
+
+## Search Places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities?country=US&q=New" \
+curl "https://cities-api.p.rapidapi.com/places?country=US&class=P&q=New" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ```javascript
 const response = await fetch(
-  'https://cities-api.p.rapidapi.com/cities?country=US&q=New',
+  'https://cities-api.p.rapidapi.com/places?country=US&class=P&q=New',
   { headers: { 'X-RapidAPI-Key': 'YOUR_API_KEY', 'X-RapidAPI-Host': 'cities-api.p.rapidapi.com' }}
 );
 ```
 
 ```python
 response = requests.get(
-    'https://cities-api.p.rapidapi.com/cities',
-    params={'country': 'US', 'q': 'New'},
+    'https://cities-api.p.rapidapi.com/places',
+    params={'country': 'US', 'class': 'P', 'q': 'New'},
     headers={'X-RapidAPI-Key': 'YOUR_API_KEY', 'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'}
 )
 ```
@@ -142,34 +203,44 @@ response = requests.get(
       "name": "New York City",
       "latitude": 40.71427,
       "longitude": -74.00597,
+      "featureClass": "P",
+      "featureCode": "PPL",
       "countryCode": "US",
+      "region": "NY",
       "population": 8804190,
+      "elevation": 10,
       "timezone": "America/New_York"
     }
   ],
-  "hasMore": true
+  "hasMore": true,
+  "nextPage": "/places?country=US&class=P&q=New&offset=25&limit=25"
 }
 ```
 
-Search and filter cities worldwide.
+Search and filter any geographic feature.
 
 ### HTTP Request
 
-`GET /cities`
+`GET /places`
 
 ### Query Parameters
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
-| `country` | Yes* | ISO country code (required with `q`) |
-| `q` | No | Search query |
+| `country` | Yes* | ISO country code (required unless class specified) |
+| `class` | Yes* | Feature class: P, H, T, S, L, A |
+| `featureCode` | No | Specific type: PPL, LK, MT, AIRP, etc. |
+| `excludeCodes` | No | Codes to exclude (comma-separated) |
+| `q` | No | Search by name (requires country or class) |
 | `minPopulation` | No | Minimum population |
-| `timezone` | No | Filter by timezone |
+| `maxPopulation` | No | Maximum population |
+| `minElevation` | No | Minimum elevation (meters) |
+| `maxElevation` | No | Maximum elevation (meters) |
 
-## Get City
+## Get Place
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581" \
+curl "https://cities-api.p.rapidapi.com/places/5128581" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -180,142 +251,30 @@ curl "https://cities-api.p.rapidapi.com/cities/5128581" \
 {
   "id": 5128581,
   "name": "New York City",
+  "asciiname": "New York City",
   "latitude": 40.71427,
   "longitude": -74.00597,
+  "featureClass": "P",
+  "featureCode": "PPL",
   "countryCode": "US",
+  "region": "NY",
   "population": 8804190,
   "elevation": 10,
-  "timezone": "America/New_York"
-}
-```
-
-Get detailed city information.
-
-### HTTP Request
-
-`GET /cities/:id`
-
-## Nearby Cities
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/nearby?radius=50" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "nearby": [
-    { "id": 5099836, "name": "Jersey City", "distance": 9.2 }
-  ],
-  "unit": "km"
-}
-```
-
-Find cities within a radius.
-
-### HTTP Request
-
-`GET /cities/:id/nearby`
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `radius` | 50 | Radius in km |
-
-## City Sun Times
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/sun-times?date=2026-06-21" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "date": "2026-06-21",
-  "sun": {
-    "sunrise": "05:25",
-    "sunset": "20:31",
-    "solarNoon": "12:58",
-    "dayLength": "15:06"
-  }
-}
-```
-
-Calculate sunrise, sunset, and day length for any date.
-
-### HTTP Request
-
-`GET /cities/:id/sun-times`
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `date` | Today | YYYY-MM-DD format |
-
-## City Climate Zone
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/climate-zone" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "climate": {
-    "zone": "Cfa",
-    "name": "Humid Subtropical",
-    "description": "Hot, humid summers and mild winters"
-  }
-}
-```
-
-Get Köppen climate classification.
-
-### HTTP Request
-
-`GET /cities/:id/climate-zone`
-
-## City Local Info
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/local-info" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": "New York City",
-  "country": "United States",
   "timezone": "America/New_York",
-  "currentLocalTime": "2026-01-06T08:30:00-05:00",
-  "currency": { "code": "USD", "symbol": "$" },
-  "languages": ["en-US", "es-US"]
+  "modifiedAt": "2024-01-15"
 }
 ```
 
-Get local info including time, currency, and languages.
+Get any feature by ID.
 
 ### HTTP Request
 
-`GET /cities/:id/local-info`
+`GET /places/:id`
 
-## City Antipode
+## Alternate Names
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/antipode" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/names?language=es" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -324,125 +283,193 @@ curl "https://cities-api.p.rapidapi.com/cities/5128581/antipode" \
 
 ```json
 {
-  "city": { "id": 5128581, "name": "New York City" },
-  "antipode": {
-    "latitude": -40.71427,
-    "longitude": 105.99403,
-    "onLand": false,
-    "nearestCity": { "name": "Perth", "distance": 2847 }
-  }
-}
-```
-
-Find the opposite point on Earth.
-
-### HTTP Request
-
-`GET /cities/:id/antipode`
-
-## City Hemisphere
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/hemisphere" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "hemisphere": { "northSouth": "Northern", "eastWest": "Western" }
-}
-```
-
-Get hemisphere location.
-
-### HTTP Request
-
-`GET /cities/:id/hemisphere`
-
-## City Hierarchy
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/hierarchy" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "hierarchy": {
-    "country": { "code": "US", "name": "United States" },
-    "region": { "code": "NY", "name": "New York" },
-    "continent": { "code": "NA", "name": "North America" }
-  }
-}
-```
-
-Get administrative hierarchy.
-
-### HTTP Request
-
-`GET /cities/:id/hierarchy`
-
-## Population Rank
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/population-rank" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City", "population": 8804190 },
-  "rank": { "country": 1, "continent": 4, "world": 24 }
-}
-```
-
-Get population rankings.
-
-### HTTP Request
-
-`GET /cities/:id/population-rank`
-
-## Nearby Airports
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/5128581/airports" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "city": { "id": 5128581, "name": "New York City" },
-  "airports": [
-    { "name": "JFK International", "iataCode": "JFK", "distance": 19.2 },
-    { "name": "LaGuardia", "iataCode": "LGA", "distance": 12.8 }
+  "place": { "id": 5128581, "name": "New York City" },
+  "names": [
+    { "name": "Nueva York", "language": "es", "isPreferred": true },
+    { "name": "NYC", "language": "en", "isShort": true }
   ]
 }
 ```
 
-Find airports near a city.
+Get translations and alternate names.
 
 ### HTTP Request
 
-`GET /cities/:id/airports`
+`GET /places/:id/names`
 
-## Distance Between Cities
+| Parameter | Description |
+|-----------|-------------|
+| `language` | Filter by language code (es, de, fr, etc.) |
+
+## Parent (Hierarchy)
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/distance?from=5128581&to=2643743" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/parent" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "parent": {
+    "id": 5128638,
+    "name": "New York",
+    "featureCode": "ADM1",
+    "countryCode": "US"
+  }
+}
+```
+
+Get the administrative parent (state, province, region).
+
+### HTTP Request
+
+`GET /places/:id/parent`
+
+## Children
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5332921/children?class=P&limit=10" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5332921, "name": "California" },
+  "data": [
+    { "id": 5368361, "name": "Los Angeles", "population": 3898747 },
+    { "id": 5391959, "name": "San Francisco", "population": 873965 }
+  ],
+  "hasMore": true,
+  "nextPage": "/places/5332921/children?class=P&offset=10&limit=10"
+}
+```
+
+Get places contained within this place.
+
+### HTTP Request
+
+`GET /places/:id/children`
+
+| Parameter | Description |
+|-----------|-------------|
+| `class` | Filter by feature class |
+| `featureCode` | Filter by feature code |
+
+## Nearby Places
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50&class=P" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "data": [
+    { "id": 5099836, "name": "Jersey City", "distance": 9.2 },
+    { "id": 5106292, "name": "Newark", "distance": 14.3 }
+  ],
+  "hasMore": false,
+  "nextPage": null,
+  "reference": { "id": 5128581, "latitude": 40.71427, "longitude": -74.00597 }
+}
+```
+
+Find features within a radius.
+
+### HTTP Request
+
+`GET /places/:id/nearby`
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `radius` | 50 | Radius in km |
+| `class` | — | Filter by feature class |
+| `featureCode` | — | Filter by feature code |
+| `excludeCodes` | — | Codes to exclude |
+| `minPopulation` | — | Minimum population |
+
+## Nearby (by Coordinates)
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/nearby?latitude=40.7128&longitude=-74.006&radius=25" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Find features near any coordinates.
+
+### HTTP Request
+
+`GET /places/nearby`
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `latitude` | Yes | Latitude |
+| `longitude` | Yes | Longitude |
+| `radius` | No | Radius in km (default: 50) |
+
+## Reverse Geocode
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/reverse?latitude=40.7128&longitude=-74.006" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "coordinates": { "latitude": 40.7128, "longitude": -74.006 },
+  "nearest": {
+    "id": 5128581,
+    "name": "New York City",
+    "distance": 0.2
+  }
+}
+```
+
+Find the nearest place to coordinates.
+
+### HTTP Request
+
+`GET /places/reverse`
+
+## Bounding Box
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/bbox?north=41&south=40&east=-73&west=-75&class=P" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Find features within a geographic rectangle.
+
+### HTTP Request
+
+`GET /places/bbox`
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `north` | Yes | North latitude |
+| `south` | Yes | South latitude |
+| `east` | Yes | East longitude |
+| `west` | Yes | West longitude |
+
+## Distance
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -458,16 +485,21 @@ curl "https://cities-api.p.rapidapi.com/cities/distance?from=5128581&to=2643743"
 }
 ```
 
-Calculate distance between cities.
+Calculate distance between any two features.
 
 ### HTTP Request
 
-`GET /cities/distance`
+`GET /places/distance`
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `from` | Yes | First place ID |
+| `to` | Yes | Second place ID |
 
 ## Bearing
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/bearing?from=5128581&to=2643743" \
+curl "https://cities-api.p.rapidapi.com/places/bearing?from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -476,65 +508,24 @@ curl "https://cities-api.p.rapidapi.com/cities/bearing?from=5128581&to=2643743" 
 
 ```json
 {
-  "from": { "name": "New York City" },
-  "to": { "name": "London" },
+  "from": { "id": 5128581, "name": "New York City" },
+  "to": { "id": 2643743, "name": "London" },
   "bearing": 51.2,
-  "compassDirection": "NE"
+  "compassDirection": "NE",
+  "distance": 5570.2
 }
 ```
 
-Get compass bearing between cities.
+Get compass bearing between places.
 
 ### HTTP Request
 
-`GET /cities/bearing`
+`GET /places/bearing`
 
 ## Midpoint
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/midpoint?city1=5128581&city2=2643743" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Find geographic midpoint between cities.
-
-### HTTP Request
-
-`GET /cities/midpoint`
-
-## Reverse Geocode
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/reverse?latitude=40.7128&longitude=-74.006" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Find nearest city to coordinates.
-
-### HTTP Request
-
-`GET /cities/reverse`
-
-## Random Cities
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/random?count=5" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get random cities. Great for games and quizzes.
-
-### HTTP Request
-
-`GET /cities/random`
-
-## City Extremes
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/extremes?country=US" \
+curl "https://cities-api.p.rapidapi.com/places/midpoint?ids=5128581,2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -543,85 +534,67 @@ curl "https://cities-api.p.rapidapi.com/cities/extremes?country=US" \
 
 ```json
 {
-  "extremes": {
-    "northernmost": { "name": "Barrow" },
-    "southernmost": { "name": "Hilo" },
-    "highest": { "name": "Leadville", "elevation": 3094 },
-    "mostPopulous": { "name": "New York City" }
-  }
+  "midpoint": { "latitude": 52.34567, "longitude": -37.12345 },
+  "inputPlaces": [
+    { "id": 5128581, "name": "New York City" },
+    { "id": 2643743, "name": "London" }
+  ],
+  "nearestPlace": { "id": 3421319, "name": "Nuuk", "distanceFromMidpoint": 1245.3 }
 }
 ```
 
-Find extreme cities (northernmost, highest, etc).
+Find the geographic midpoint of multiple places.
 
 ### HTTP Request
 
-`GET /cities/extremes`
-
-## Bounding Box
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/bbox?north=41&south=40&east=-73&west=-75" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Find cities within a geographic box.
-
-### HTTP Request
-
-`GET /cities/bbox`
-
-## Batch Lookup
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/batch?ids=5128581,2643743,2988507" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get multiple cities in one request.
-
-### HTTP Request
-
-`GET /cities/batch`
-
-## Distance Matrix
-
-```shell
-curl "https://cities-api.p.rapidapi.com/cities/distance-matrix?ids=5128581,2643743,2988507" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Calculate distances between all pairs.
-
-### HTTP Request
-
-`GET /cities/distance-matrix`
+`GET /places/midpoint`
 
 ## Route
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/cities/route?ids=5128581,2643743,2988507" \
+curl "https://cities-api.p.rapidapi.com/places/route?ids=5128581,2643743,2988507" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Calculate route through multiple cities.
+Calculate an optimized route through multiple places (max 10).
 
 ### HTTP Request
 
-`GET /cities/route`
+`GET /places/route`
 
-# Places
-
-The `/places` endpoint provides access to **all 13+ million geographic features** in our database, including lakes, rivers, mountains, parks, and more.
-
-## Feature Classes
+## Along Route
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/feature-classes" \
+curl "https://cities-api.p.rapidapi.com/places/along-route?from=5128581&to=5368361&class=P" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Find places along a route between two points.
+
+### HTTP Request
+
+`GET /places/along-route`
+
+## Compare Places
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/compare?ids=5128581,2643743,2988507" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Compare multiple places side by side (max 5).
+
+### HTTP Request
+
+`GET /places/compare`
+
+## Extremes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/extremes?country=US&class=P" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -630,105 +603,366 @@ curl "https://cities-api.p.rapidapi.com/feature-classes" \
 
 ```json
 {
-  "data": [
-    { "class": "P", "name": "Populated Places", "description": "Cities, towns, villages", "count": 5185603 },
-    { "class": "H", "name": "Hydrographic", "description": "Lakes, rivers, streams", "count": 2603985 },
-    { "class": "S", "name": "Spots/Buildings", "description": "Airports, schools, churches", "count": 2536020 },
-    { "class": "T", "name": "Terrain", "description": "Mountains, hills, valleys", "count": 1827421 },
-    { "class": "L", "name": "Parks/Areas", "description": "Parks, reserves, areas", "count": 491455 }
+  "northernmost": { "id": 5879400, "name": "Utqiagvik", "latitude": 71.29 },
+  "southernmost": { "id": 5856195, "name": "Hilo", "latitude": 19.73 },
+  "highest": { "id": 5427946, "name": "Leadville", "elevation": 3094 },
+  "mostPopulous": { "id": 5128581, "name": "New York City", "population": 8804190 }
+}
+```
+
+Find extreme places (northernmost, highest, etc).
+
+### HTTP Request
+
+`GET /places/extremes`
+
+## Sun Times
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "date": "2026-06-21",
+  "sun": {
+    "sunrise": "05:25",
+    "sunset": "20:31",
+    "solarNoon": "12:58",
+    "daylightHours": 15.1
+  },
+  "timezone": "America/New_York"
+}
+```
+
+Calculate sunrise, sunset, and day length.
+
+### HTTP Request
+
+`GET /places/:id/sun-times`
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `date` | Today | Date in YYYY-MM-DD format |
+
+## Sun Times (by Coordinates)
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/sun-times?latitude=40.7128&longitude=-74.006&date=2026-06-21" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get sun times for any coordinates.
+
+### HTTP Request
+
+`GET /places/sun-times`
+
+## Local Time
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/local-time" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "localTime": "2026-01-06T08:30:00-05:00",
+  "timezone": "America/New_York",
+  "utcOffset": -5
+}
+```
+
+Get current local time.
+
+### HTTP Request
+
+`GET /places/:id/local-time`
+
+## UTC Offset
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/utc-offset" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get UTC offset information.
+
+### HTTP Request
+
+`GET /places/:id/utc-offset`
+
+## Time at Coordinates
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/time-at?latitude=40.7128&longitude=-74.006" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get current time at any coordinates.
+
+### HTTP Request
+
+`GET /places/time-at`
+
+## Same Timezone
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/same-timezone?id=5128581" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Find other places in the same timezone.
+
+### HTTP Request
+
+`GET /places/same-timezone`
+
+## Places by Currency
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/by-currency?code=EUR" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Find places that use a specific currency.
+
+### HTTP Request
+
+`GET /places/by-currency`
+
+## Local Info
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/local-info" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "country": { "code": "US", "name": "United States", "capital": "Washington" },
+  "timezone": {
+    "id": "America/New_York",
+    "utcOffset": -5,
+    "currentLocalTime": "2026-01-06T08:30:00-05:00"
+  },
+  "currency": { "code": "USD", "name": "US Dollar" },
+  "phoneCode": "+1",
+  "languages": ["en-US", "es-US"]
+}
+```
+
+Get combined local information.
+
+### HTTP Request
+
+`GET /places/:id/local-info`
+
+## Population Rank
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/population-rank" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City", "population": 8804190 },
+  "rank": {
+    "country": 1,
+    "region": 1,
+    "world": 24
+  }
+}
+```
+
+Get population rankings.
+
+### HTTP Request
+
+`GET /places/:id/population-rank`
+
+## Metro Area
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/metro-area" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get metropolitan area information.
+
+### HTTP Request
+
+`GET /places/:id/metro-area`
+
+## Climate Zone
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/climate-zone" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "climate": {
+    "zone": "Cfa",
+    "name": "Humid Subtropical",
+    "description": "Hot, humid summers and mild winters",
+    "hemisphere": "Northern",
+    "tropicalZone": false
+  }
+}
+```
+
+Get Köppen climate classification.
+
+### HTTP Request
+
+`GET /places/:id/climate-zone`
+
+## Antipode
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/antipode" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "antipode": { "latitude": -40.71427, "longitude": 105.99403 },
+  "nearestPlaceToAntipode": {
+    "id": 1796236,
+    "name": "Jiuquan",
+    "distanceFromAntipode": 2847.3
+  }
+}
+```
+
+Find the opposite point on Earth.
+
+### HTTP Request
+
+`GET /places/:id/antipode`
+
+## Hemisphere
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/hemisphere" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "hemisphere": {
+    "northSouth": "Northern",
+    "eastWest": "Western"
+  },
+  "distanceFromEquator": 4524.8,
+  "distanceFromPrimeMeridian": 5570.1
+}
+```
+
+Get hemisphere location.
+
+### HTTP Request
+
+`GET /places/:id/hemisphere`
+
+## Nearby Airports
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/airports" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "place": { "id": 5128581, "name": "New York City" },
+  "airports": [
+    { "id": 5122432, "name": "John F Kennedy International Airport", "distance": 19.2 },
+    { "id": 5124497, "name": "LaGuardia Airport", "distance": 12.8 }
   ],
-  "total": 13383829
+  "hasMore": false,
+  "searchRadius": 100,
+  "unit": "km"
 }
 ```
 
-Get all available feature classes and their counts.
+Find airports near a place.
 
 ### HTTP Request
 
-`GET /feature-classes`
+`GET /places/:id/airports`
 
-## Search Places
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `radius` | 100 | Search radius in km |
+| `limit` | 10 | Maximum results |
+
+## Nearby Seaports
 
 ```shell
-# Find lakes in the US
-curl "https://cities-api.p.rapidapi.com/places?country=US&class=H&featureCode=LK&limit=5" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/seaports" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
+Find seaports near a place.
+
+### HTTP Request
+
+`GET /places/:id/seaports`
+
+## Shipping Hub
+
 ```shell
-# Find mountains in Switzerland
-curl "https://cities-api.p.rapidapi.com/places?country=CH&class=T&featureCode=MT&limit=5" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/shipping-hub" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "data": [
-    {
-      "id": 5554072,
-      "name": "Lake Tahoe",
-      "latitude": 39.09973,
-      "longitude": -120.03283,
-      "countryCode": "US",
-      "featureClass": "H",
-      "featureCode": "LK",
-      "elevation": 1899
-    }
-  ]
-}
-```
-
-Search any geographic feature by class and type.
+Find the nearest shipping/logistics hub.
 
 ### HTTP Request
 
-`GET /places`
-
-### Query Parameters
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `country` | Yes* | ISO country code (required unless class/featureCode specified) |
-| `class` | No | Feature class: P, H, T, S, L, A, V, R, U |
-| `featureCode` | No | Specific feature code: LK (lake), MT (mountain), etc. |
-| `q` | No | Search by name (requires class or featureCode) |
-| `minElevation` | No | Minimum elevation in meters |
-| `maxElevation` | No | Maximum elevation in meters |
-
-### Common Feature Codes
-
-| Code | Class | Description |
-|------|-------|-------------|
-| `LK` | H | Lake |
-| `STM` | H | Stream/River |
-| `RSV` | H | Reservoir |
-| `BAY` | H | Bay |
-| `GLCR` | H | Glacier |
-| `MT` | T | Mountain |
-| `MTS` | T | Mountains (range) |
-| `HLL` | T | Hill |
-| `VLC` | T | Volcano |
-| `ISL` | T | Island |
-| `BCH` | T | Beach |
-| `PRK` | L | Park |
-
-## Get Place
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5554072" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get detailed information about any geographic feature by ID.
-
-### HTTP Request
-
-`GET /places/:id`
+`GET /places/:id/shipping-hub`
 
 # Countries
 
@@ -740,7 +974,7 @@ curl "https://cities-api.p.rapidapi.com/countries" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get all countries.
+Get all countries with pagination.
 
 ### HTTP Request
 
@@ -759,14 +993,18 @@ curl "https://cities-api.p.rapidapi.com/countries/US" \
 ```json
 {
   "code": "US",
+  "code3": "USA",
   "name": "United States",
   "capital": "Washington",
   "population": 327167434,
   "area": 9629091,
+  "continent": "NA",
+  "tld": ".us",
   "currencyCode": "USD",
+  "currencyName": "Dollar",
   "phoneCode": "1",
-  "languages": "en-US,es-US",
-  "drivingSide": "right"
+  "languages": "en-US,es-US,haw,fr",
+  "neighbours": "CA,MX,CU"
 }
 ```
 
@@ -776,7 +1014,7 @@ Get country details.
 
 `GET /countries/:code`
 
-## Country Neighbors
+## Neighbors
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/countries/FR/neighbors" \
@@ -792,7 +1030,9 @@ curl "https://cities-api.p.rapidapi.com/countries/FR/neighbors" \
   "neighbors": [
     { "code": "DE", "name": "Germany" },
     { "code": "ES", "name": "Spain" },
-    { "code": "IT", "name": "Italy" }
+    { "code": "IT", "name": "Italy" },
+    { "code": "BE", "name": "Belgium" },
+    { "code": "CH", "name": "Switzerland" }
   ]
 }
 ```
@@ -802,6 +1042,164 @@ Get bordering countries.
 ### HTTP Request
 
 `GET /countries/:code/neighbors`
+
+## Country Stats
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/US/stats" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Get detailed statistics about a country.
+
+### HTTP Request
+
+`GET /countries/:code/stats`
+
+## Compare Countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/compare?codes=US,JP,DE" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Compare multiple countries (max 5).
+
+### HTTP Request
+
+`GET /countries/compare`
+
+## Landlocked
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/landlocked" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Countries without coastline.
+
+### HTTP Request
+
+`GET /countries/landlocked`
+
+## Islands
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/islands" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Island nations.
+
+### HTTP Request
+
+`GET /countries/islands`
+
+## Largest
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/largest?by=area" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Largest countries by area or population.
+
+### HTTP Request
+
+`GET /countries/largest`
+
+| Parameter | Default | Values |
+|-----------|---------|--------|
+| `by` | area | `area`, `population` |
+
+## Smallest
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/smallest?by=area" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Smallest countries by area or population.
+
+### HTTP Request
+
+`GET /countries/smallest`
+
+## By Currency
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-currency/EUR" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Countries using a currency.
+
+### HTTP Request
+
+`GET /countries/by-currency/:code`
+
+## By Language
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-language/es" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Countries where a language is spoken.
+
+### HTTP Request
+
+`GET /countries/by-language/:code`
+
+## By Phone Code
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-phone-code/1" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Countries by phone country code.
+
+### HTTP Request
+
+`GET /countries/by-phone-code/:code`
+
+## By TLD
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-tld/.de" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Country by top-level domain.
+
+### HTTP Request
+
+`GET /countries/by-tld/:tld`
+
+## By Driving Side
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/driving-side/left" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Countries by driving side (left or right).
+
+### HTTP Request
+
+`GET /countries/driving-side/:side`
 
 ## Electrical Standards
 
@@ -816,6 +1214,7 @@ curl "https://cities-api.p.rapidapi.com/countries/US/electrical" \
 ```json
 {
   "country": "US",
+  "countryName": "United States",
   "electrical": {
     "voltage": 120,
     "frequency": 60,
@@ -824,7 +1223,7 @@ curl "https://cities-api.p.rapidapi.com/countries/US/electrical" \
 }
 ```
 
-Essential for travel apps — get voltage and plug types.
+Voltage and plug types.
 
 ### HTTP Request
 
@@ -838,20 +1237,7 @@ curl "https://cities-api.p.rapidapi.com/countries/localization/DE" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "country": { "code": "DE", "name": "Germany" },
-  "localization": {
-    "languages": ["de"],
-    "currency": { "code": "EUR", "symbol": "€" },
-    "numberFormat": { "decimalSeparator": ",", "thousandsSeparator": "." }
-  }
-}
-```
-
-Get localization settings.
+Localization settings (languages, number format).
 
 ### HTTP Request
 
@@ -865,26 +1251,13 @@ curl "https://cities-api.p.rapidapi.com/countries/format/JP" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "country": { "code": "JP", "name": "Japan" },
-  "format": {
-    "drivingSide": "left",
-    "dateFormat": "YYYY/MM/DD",
-    "measurementSystem": "metric"
-  }
-}
-```
-
-Get formatting conventions.
+Date format, measurement system, driving side.
 
 ### HTTP Request
 
 `GET /countries/format/:code`
 
-## Calling Codes
+## Calling Info
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/countries/calling/US" \
@@ -892,19 +1265,7 @@ curl "https://cities-api.p.rapidapi.com/countries/calling/US" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "country": { "code": "US" },
-  "calling": {
-    "countryCode": "+1",
-    "format": "(XXX) XXX-XXXX"
-  }
-}
-```
-
-Get phone calling information.
+Phone calling information.
 
 ### HTTP Request
 
@@ -918,71 +1279,13 @@ curl "https://cities-api.p.rapidapi.com/countries/major-cities/JP" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get largest cities in a country.
+Largest cities in a country.
 
 ### HTTP Request
 
 `GET /countries/major-cities/:code`
 
-## Landlocked Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/landlocked" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get countries without coastline.
-
-### HTTP Request
-
-`GET /countries/landlocked`
-
-## Island Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/islands" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get island nations.
-
-### HTTP Request
-
-`GET /countries/islands`
-
-## Largest Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/largest?by=area" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get largest by area or population.
-
-### HTTP Request
-
-`GET /countries/largest`
-
-## Smallest Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/smallest?by=area" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get smallest by area or population.
-
-### HTTP Request
-
-`GET /countries/smallest`
-
 # International Organizations
-
-Access membership data for major international organizations.
 
 ## G7 Members
 
@@ -997,12 +1300,13 @@ curl "https://cities-api.p.rapidapi.com/countries/g7" \
 ```json
 {
   "organization": "G7",
-  "fullName": "Group of Seven",
-  "memberCount": 7,
+  "description": "Group of Seven major advanced economies",
   "data": [
     { "code": "US", "name": "United States" },
-    { "code": "JP", "name": "Japan" }
-  ]
+    { "code": "JP", "name": "Japan" },
+    { "code": "DE", "name": "Germany" }
+  ],
+  "hasMore": true
 }
 ```
 
@@ -1012,151 +1316,35 @@ curl "https://cities-api.p.rapidapi.com/countries/g7" \
 
 ## G20 Members
 
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/g20" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-World's largest economies.
-
-### HTTP Request
-
 `GET /countries/g20`
 
 ## BRICS Members
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/brics" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Including 2024 expansion members.
-
-### HTTP Request
 
 `GET /countries/brics`
 
 ## OPEC Members
 
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/opec" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Oil-exporting countries.
-
-### HTTP Request
-
 `GET /countries/opec`
 
 ## NATO Members
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/nato-members" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-### HTTP Request
 
 `GET /countries/nato-members`
 
 ## EU Members
 
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/eu-members" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-European Union member states.
-
-### HTTP Request
-
 `GET /countries/eu-members`
 
 ## Schengen Area
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/schengen" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Passport-free travel zone.
-
-### HTTP Request
 
 `GET /countries/schengen`
 
 ## Commonwealth
 
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/commonwealth" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Commonwealth of Nations members.
-
-### HTTP Request
-
 `GET /countries/commonwealth`
 
 ## UN Members
 
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/un-members" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-All 193 United Nations member states.
-
-### HTTP Request
-
 `GET /countries/un-members`
-
-# Continents
-
-## List Continents
-
-```shell
-curl "https://cities-api.p.rapidapi.com/continents" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "data": [
-    { "code": "AF", "name": "Africa" },
-    { "code": "AS", "name": "Asia" },
-    { "code": "EU", "name": "Europe" }
-  ]
-}
-```
-
-### HTTP Request
-
-`GET /continents`
-
-## Get Continent
-
-```shell
-curl "https://cities-api.p.rapidapi.com/continents/EU" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-### HTTP Request
-
-`GET /continents/:code`
 
 # Timezones
 
@@ -1175,7 +1363,7 @@ curl "https://cities-api.p.rapidapi.com/timezones" \
 ## Get Timezone
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/timezones/America%2FNew_York" \
+curl "https://cities-api.p.rapidapi.com/timezones/America-New_York" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
@@ -1185,11 +1373,15 @@ curl "https://cities-api.p.rapidapi.com/timezones/America%2FNew_York" \
 ```json
 {
   "id": "America/New_York",
+  "countryCode": "US",
   "gmtOffset": -5,
   "dstOffset": -4,
+  "rawOffset": -5,
   "currentTime": "2026-01-06T08:30:00-05:00"
 }
 ```
+
+Note: Use `-` instead of `/` in timezone IDs (e.g., `America-New_York`).
 
 ### HTTP Request
 
@@ -1203,7 +1395,7 @@ curl "https://cities-api.p.rapidapi.com/timezone-at?latitude=40.7128&longitude=-
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get timezone for any coordinates.
+Get timezone for coordinates.
 
 ### HTTP Request
 
@@ -1221,9 +1413,12 @@ curl "https://cities-api.p.rapidapi.com/time-difference?from=5128581&to=2643743"
 
 ```json
 {
-  "from": { "name": "New York City", "localTime": "08:30" },
-  "to": { "name": "London", "localTime": "13:30" },
-  "difference": { "hours": 5, "description": "London is 5 hours ahead" }
+  "from": { "id": 5128581, "name": "New York City", "timezone": "America/New_York" },
+  "to": { "id": 2643743, "name": "London", "timezone": "Europe/London" },
+  "difference": {
+    "hours": 5,
+    "description": "London is 5 hours ahead"
+  }
 }
 ```
 
@@ -1231,17 +1426,86 @@ curl "https://cities-api.p.rapidapi.com/time-difference?from=5128581&to=2643743"
 
 `GET /time-difference`
 
-# Airports
+# Postal Codes
+
+## Search Postal Codes
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/airports?country=US" \
+curl "https://cities-api.p.rapidapi.com/postal-codes?country=US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ### HTTP Request
 
+`GET /postal-codes`
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `country` | Yes | ISO country code |
+
+## Lookup Postal Code
+
+```shell
+curl "https://cities-api.p.rapidapi.com/postal-codes/US/10001" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "data": [
+    {
+      "postalCode": "10001",
+      "placeName": "New York",
+      "region": "New York",
+      "regionCode": "NY",
+      "latitude": 40.7484,
+      "longitude": -73.9967
+    }
+  ],
+  "hasMore": false,
+  "nextPage": null,
+  "country": "US"
+}
+```
+
+### HTTP Request
+
+`GET /postal-codes/:country/:code`
+
+## Nearby Postal Codes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&longitude=-74.006" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+### HTTP Request
+
+`GET /postal-codes/nearby`
+
+# Airports
+
+```shell
+curl "https://cities-api.p.rapidapi.com/airports?country=US&q=John" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Search airports by country and name.
+
+### HTTP Request
+
 `GET /airports`
+
+| Parameter | Description |
+|-----------|-------------|
+| `country` | ISO country code |
+| `q` | Search by name |
 
 # Seaports
 
@@ -1250,6 +1514,8 @@ curl "https://cities-api.p.rapidapi.com/seaports?country=NL" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
+
+Search seaports by country and name.
 
 ### HTTP Request
 
@@ -1263,15 +1529,140 @@ curl "https://cities-api.p.rapidapi.com/capitals" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-World capital cities.
+List all world capital cities.
 
 ### HTTP Request
 
 `GET /capitals`
 
-# Currencies
+# Unit Conversion
 
-## List Currencies
+All API responses use metric units (km, m, km²). Use these endpoints to convert.
+
+## Distance
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/distance?value=100&from=km&to=mi" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+> Response:
+
+```json
+{
+  "original": { "value": 100, "unit": "km" },
+  "converted": { "value": 62.137119, "unit": "mi" }
+}
+```
+
+Units: `km`, `mi`, `m`, `ft`, `nm` (nautical miles)
+
+### HTTP Request
+
+`GET /convert/distance`
+
+## Elevation
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/elevation?value=3000&from=m&to=ft" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Units: `m`, `ft`
+
+### HTTP Request
+
+`GET /convert/elevation`
+
+## Area
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/area?value=1000&from=sqkm&to=sqmi" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Units: `sqkm`, `sqmi`, `ha`, `acre`
+
+### HTTP Request
+
+`GET /convert/area`
+
+## Temperature
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/temperature?value=20&from=c&to=f" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Units: `c`, `f`, `k`
+
+### HTTP Request
+
+`GET /convert/temperature`
+
+## Speed
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/speed?value=100&from=kmh&to=mph" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Units: `kmh`, `mph`, `knots`, `ms`
+
+### HTTP Request
+
+`GET /convert/speed`
+
+## Coordinates
+
+```shell
+curl "https://cities-api.p.rapidapi.com/convert/coordinates?value=40.7128,-74.006&from=dd&to=dms" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+Convert between decimal degrees and degrees-minutes-seconds.
+
+### HTTP Request
+
+`GET /convert/coordinates`
+
+# Reference
+
+## Feature Classes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/feature-classes" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+All feature classes with counts.
+
+### HTTP Request
+
+`GET /feature-classes`
+
+## Feature Codes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/feature-codes" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+All GeoNames feature codes.
+
+### HTTP Request
+
+`GET /feature-codes`
+
+## Currencies
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/currencies" \
@@ -1283,9 +1674,7 @@ curl "https://cities-api.p.rapidapi.com/currencies" \
 
 `GET /currencies`
 
-# Languages
-
-## List Languages
+## Languages
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/languages" \
@@ -1312,10 +1701,12 @@ curl "https://cities-api.p.rapidapi.com/languages/es" \
   "code": "es",
   "name": "Spanish",
   "nativeName": "Español",
+  "family": "Indo-European",
   "countries": [
     { "code": "ES", "name": "Spain" },
     { "code": "MX", "name": "Mexico" }
-  ]
+  ],
+  "countryCount": 21
 }
 ```
 
@@ -1323,79 +1714,45 @@ curl "https://cities-api.p.rapidapi.com/languages/es" \
 
 `GET /languages/:code`
 
-# Postal Codes
-
-## List Postal Codes
+## Continents
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes?country=US" \
+curl "https://cities-api.p.rapidapi.com/continents" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ### HTTP Request
 
-`GET /postal-codes`
+`GET /continents`
 
-## Lookup Postal Code
+## Get Continent
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes/US/10001" \
+curl "https://cities-api.p.rapidapi.com/continents/EU" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "postalCode": "10001",
-  "placeName": "New York",
-  "region": "New York",
-  "latitude": 40.7484,
-  "longitude": -73.9967
-}
-```
+Get continent details with countries.
 
 ### HTTP Request
 
-`GET /postal-codes/:country/:code`
+`GET /continents/:code`
 
-## Nearby Postal Codes
+## Phone Codes
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&longitude=-74.006" \
+curl "https://cities-api.p.rapidapi.com/phone-codes" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ### HTTP Request
 
-`GET /postal-codes/nearby`
+`GET /phone-codes`
 
 # Validation
-
-## Validate Postal Code
-
-```shell
-curl "https://cities-api.p.rapidapi.com/validate/postal-code/US/10001" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "valid": true,
-  "country": "US",
-  "postalCode": "10001"
-}
-```
-
-### HTTP Request
-
-`GET /validate/postal-code/:country/:code`
 
 ## Validate Coordinates
 
@@ -1410,86 +1767,54 @@ curl "https://cities-api.p.rapidapi.com/validate/coordinates?latitude=40.7128&lo
 ```json
 {
   "valid": true,
+  "latitude": 40.7128,
+  "longitude": -74.006,
   "onLand": true,
   "country": { "code": "US", "name": "United States" },
-  "nearestCity": { "name": "New York City", "distance": 0.2 }
+  "nearestPlace": { "name": "New York City", "distance": 0.2 }
 }
 ```
+
+Check if coordinates are valid and on land.
 
 ### HTTP Request
 
 `GET /validate/coordinates`
 
-# Comparison
-
-## Compare Cities
+## Validate Postal Code
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/compare/cities?ids=5128581,2643743" \
+curl "https://cities-api.p.rapidapi.com/validate/postal-code/US/10001" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Compare multiple cities side by side.
+Check if a postal code exists.
 
 ### HTTP Request
 
-`GET /compare/cities`
-
-## Compare Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/compare/countries?codes=US,JP,DE" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Compare multiple countries.
-
-### HTTP Request
-
-`GET /compare/countries`
-
-# Reference
-
-## Feature Codes
-
-```shell
-curl "https://cities-api.p.rapidapi.com/feature-codes" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-GeoNames feature codes for filtering.
-
-### HTTP Request
-
-`GET /feature-codes`
+`GET /validate/postal-code/:country/:code`
 
 # Errors
-
-| Code | Meaning |
-|------|---------|
-| 200 | Success |
-| 400 | Bad Request |
-| 401 | Unauthorized |
-| 404 | Not Found |
-| 429 | Rate Limited |
-| 500 | Server Error |
 
 > Error format:
 
 ```json
 {
-  "error": { "message": "City not found", "status": 404 }
+  "error": {
+    "message": "Place not found",
+    "status": 404
+  }
 }
 ```
 
-# Rate Limits
+| Code | Meaning |
+|------|---------|
+| 200 | Success (even if results are empty) |
+| 400 | Bad Request — missing or invalid parameters |
+| 401 | Unauthorized — invalid API key |
+| 404 | Not Found — resource doesn't exist |
+| 500 | Server Error |
+| 504 | Timeout — query took too long |
 
-| Tier | Requests/Day | Rate |
-|------|--------------|------|
-| Basic | 1,500 | 1,000/hr |
-| Pro | 35,000 | 10/sec |
-| Ultra | 60,000 | 20/sec |
-| Mega | 100,000 | 30/sec |
+**Note:** Empty results return `200` with `{ "data": [] }`, not `404`.
