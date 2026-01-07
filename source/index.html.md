@@ -16,14 +16,14 @@ code_clipboard: true
 
 meta:
   - name: description
-    content: Cities API - Geographic data API with 86 endpoints covering places, countries, timezones, and more
+    content: Cities API - Geographic data API with 84 endpoints covering places, countries, timezones, and more
 ---
 
 # Introduction
 
 Everything is a place. The Cities API gives you unified access to 13+ million geographic features — cities, lakes, mountains, airports, parks — through one consistent interface. Query any feature type the same way: search, filter, calculate distances, find what's nearby.
 
-Plus 252 countries, 418 timezones, and 1.8 million postal codes. **86 fast REST endpoints.**
+Plus 252 countries, 418 timezones, and 1.8 million postal codes. **84 fast REST endpoints.**
 
 ## Everything is a Place
 
@@ -168,7 +168,7 @@ See how developers use the Cities API to build powerful features in just a few c
 - **13+ Million Places** — Cities, towns, lakes, rivers, mountains, airports, parks, and more
 - **Unified Interface** — Query any feature type with the same parameters: class, featureCode, country
 - **1.8 Million Postal Codes** — Full postal code database for 100+ countries
-- **86 Endpoints** — Comprehensive coverage for any location-based use case
+- **84 Endpoints** — Comprehensive coverage for any location-based use case
 - **Multi-language Support** — Place names in 40+ languages
 - **Distance & Proximity** — Calculate distance between any two places, find what's nearby
 - **Hierarchy & Relationships** — Parent regions, child places, administrative divisions
