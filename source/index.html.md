@@ -262,65 +262,45 @@ The response includes `hasMore` (boolean) and `nextPage` (URL or null) for easy 
 
 The `/places` endpoint is the core of the API. It provides access to all 13+ million geographic features.
 
-## Feature Classes
-
-| Class | Name | Examples | Count |
-|-------|------|----------|-------|
-| `P` | Populated Places | Cities, towns, villages | 5.2M |
-| `H` | Hydrographic | Lakes, rivers, streams | 2.6M |
-| `S` | Spots/Buildings | Airports, schools, churches | 2.5M |
-| `T` | Terrain | Mountains, hills, valleys | 1.8M |
-| `L` | Parks/Areas | Parks, reserves, regions | 0.5M |
-| `A` | Administrative | Countries, states, counties | 0.5M |
-
-## Search Places
+## Search places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places?country=US&class=P&q=New" \
+curl "https://cities-api.p.rapidapi.com/places?q=New&country=US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
 ```javascript
 const response = await fetch(
-  'https://cities-api.p.rapidapi.com/places?country=US&class=P&q=New',
-  { headers: { 'X-RapidAPI-Key': 'YOUR_API_KEY', 'X-RapidAPI-Host': 'cities-api.p.rapidapi.com' }}
+  'https://cities-api.p.rapidapi.com/places?q=New&country=US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
 );
+const data = await response.json();
 ```
 
 ```python
+import requests
+
 response = requests.get(
     'https://cities-api.p.rapidapi.com/places',
-    params={'country': 'US', 'class': 'P', 'q': 'New'},
-    headers={'X-RapidAPI-Key': 'YOUR_API_KEY', 'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'}
-)
-```
-
-> Response:
-
-```json
-{
-  "places": [
-    {
-      "id": 5128581,
-      "name": "New York City",
-      "latitude": 40.71427,
-      "longitude": -74.00597,
-      "featureClass": "P",
-      "featureCode": "PPL",
-      "countryCode": "US",
-      "region": "NY",
-      "population": 8804190,
-      "elevation": 10,
-      "timezone": "America/New_York"
+    params={
+        'q': 'New',
+        'country': 'US'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
     }
-  ],
-  "hasMore": true,
-  "nextPage": "/places?country=US&class=P&q=New&offset=25&limit=25"
-}
+)
+data = response.json()
 ```
 
-Search and filter any geographic feature.
+Search all geographic features with flexible filtering
 
 ### HTTP Request
 
@@ -328,248 +308,131 @@ Search and filter any geographic feature.
 
 ### Query Parameters
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `country` | Yes* | ISO country code (required unless class specified) |
-| `class` | Yes* | Feature class: P, H, T, S, L, A |
-| `featureCode` | No | Specific type: PPL, LK, MT, AIRP, etc. |
-| `excludeCodes` | No | Codes to exclude (comma-separated) |
-| `q` | No | Search by name (requires country or class) |
-| `minPopulation` | No | Minimum population |
-| `maxPopulation` | No | Maximum population |
-| `minElevation` | No | Minimum elevation (meters) |
-| `maxElevation` | No | Maximum elevation (meters) |
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `q` | string | No |  |
+| `country` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+| `excludeCodes` | string | No |  |
+| `minPopulation` | string | No |  |
+| `maxPopulation` | string | No |  |
+| `minElevation` | string | No |  |
+| `maxElevation` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
 
-## Get Place
+## Reverse geocoding
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581" \
+curl "https://cities-api.p.rapidapi.com/places/reverse?latitude=40.7128&longitude=-74.006&radius=50" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "id": 5128581,
-  "name": "New York City",
-  "asciiname": "New York City",
-  "latitude": 40.71427,
-  "longitude": -74.00597,
-  "featureClass": "P",
-  "featureCode": "PPL",
-  "countryCode": "US",
-  "region": "NY",
-  "population": 8804190,
-  "elevation": 10,
-  "timezone": "America/New_York",
-  "modifiedAt": "2024-01-15"
-}
-```
-
-Get any feature by ID.
-
-### HTTP Request
-
-`GET /places/:id`
-
-## Alternate Names
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/names?language=es" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "names": [
-    { "name": "Nueva York", "language": "es", "isPreferred": true },
-    { "name": "NYC", "language": "en", "isShort": true }
-  ]
-}
-```
-
-Get translations and alternate names.
-
-### HTTP Request
-
-`GET /places/:id/names`
-
-| Parameter | Description |
-|-----------|-------------|
-| `language` | Filter by language code (es, de, fr, etc.) |
-
-## Parent (Hierarchy)
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/parent" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "parent": {
-    "id": 5128638,
-    "name": "New York",
-    "featureCode": "ADM1",
-    "countryCode": "US"
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/reverse?latitude=40.7128&longitude=-74.006&radius=50',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
 
-Get the administrative parent (state, province, region).
+```python
+import requests
 
-### HTTP Request
-
-`GET /places/:id/parent`
-
-## Children
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5332921/children?class=P&limit=10" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/reverse',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006',
+        'radius': '50'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
 
-> Response:
-
-```json
-{
-  "place": { "id": 5332921, "name": "California" },
-  "places": [
-    { "id": 5368361, "name": "Los Angeles", "population": 3898747 },
-    { "id": 5391959, "name": "San Francisco", "population": 873965 }
-  ],
-  "hasMore": true,
-  "nextPage": "/places/5332921/children?class=P&offset=10&limit=10"
-}
-```
-
-Get places contained within this place.
-
-### HTTP Request
-
-`GET /places/:id/children`
-
-| Parameter | Description |
-|-----------|-------------|
-| `class` | Filter by feature class |
-| `featureCode` | Filter by feature code |
-
-## Nearby Places
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50&class=P" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "places": [
-    { "id": 5099836, "name": "Jersey City", "distance": 9.2 },
-    { "id": 5106292, "name": "Newark", "distance": 14.3 }
-  ],
-  "hasMore": false,
-  "nextPage": null,
-  "reference": { "id": 5128581, "latitude": 40.71427, "longitude": -74.00597 }
-}
-```
-
-Find features within a radius.
-
-### HTTP Request
-
-`GET /places/:id/nearby`
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `radius` | 50 | Radius in km |
-| `class` | — | Filter by feature class |
-| `featureCode` | — | Filter by feature code |
-| `excludeCodes` | — | Codes to exclude |
-| `minPopulation` | — | Minimum population |
-
-## Nearby (by Coordinates)
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/nearby?latitude=40.7128&longitude=-74.006&radius=25" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Find features near any coordinates.
-
-### HTTP Request
-
-`GET /places/nearby`
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `latitude` | Yes | Latitude |
-| `longitude` | Yes | Longitude |
-| `radius` | No | Radius in km (default: 50) |
-
-## Reverse Geocode
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/reverse?latitude=40.7128&longitude=-74.006" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "coordinates": { "latitude": 40.7128, "longitude": -74.006 },
-  "nearest": {
-    "id": 5128581,
-    "name": "New York City",
-    "distance": 0.2
-  }
-}
-```
-
-Find the nearest place to coordinates.
+Find the nearest place to coordinates
 
 ### HTTP Request
 
 `GET /places/reverse`
 
-## Bounding Box
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+| `radius` | string | No |  |
+
+## Find nearby places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/bbox?north=41&south=40&east=-73&west=-75&class=P" \
+curl "https://cities-api.p.rapidapi.com/places/nearby?latitude=40.7128&longitude=-74.006&radius=50&limit=25" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Find features within a geographic rectangle.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/nearby?latitude=40.7128&longitude=-74.006&radius=50&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/nearby',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006',
+        'radius': '50',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Find all places near given coordinates
 
 ### HTTP Request
 
-`GET /places/bbox`
+`GET /places/nearby`
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `north` | Yes | North latitude |
-| `south` | Yes | South latitude |
-| `east` | Yes | East longitude |
-| `west` | Yes | West longitude |
+### Query Parameters
 
-## Distance
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+| `radius` | string | No |  |
+| `limit` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+
+## Calculate distance
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=2643743" \
@@ -577,55 +440,273 @@ curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=2643743"
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "from": { "id": 5128581, "name": "New York City" },
-  "to": { "id": 2643743, "name": "London" },
-  "distance": 5570.2,
-  "unit": "km"
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Calculate distance between any two features.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/distance',
+    params={
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Calculate distance between two places
 
 ### HTTP Request
 
 `GET /places/distance`
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `from` | Yes | First place ID |
-| `to` | Yes | Second place ID |
+### Query Parameters
 
-## Bearing
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Search places in bounding box
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/bearing?from=5128581&to=2643743" \
+curl "https://cities-api.p.rapidapi.com/places/bbox?north=41&south=40&east=-73&west=-75&limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "from": { "id": 5128581, "name": "New York City" },
-  "to": { "id": 2643743, "name": "London" },
-  "bearing": 51.2,
-  "compassDirection": "NE",
-  "distance": 5570.2
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/bbox?north=41&south=40&east=-73&west=-75&limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Get compass bearing between places.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/bbox',
+    params={
+        'north': '41',
+        'south': '40',
+        'east': '-73',
+        'west': '-75',
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/bearing`
+`GET /places/bbox`
 
-## Midpoint
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `north` | string | Yes |  |
+| `south` | string | Yes |  |
+| `east` | string | Yes |  |
+| `west` | string | Yes |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `minPopulation` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+| `excludeCodes` | string | No |  |
+
+## Get sun times for coordinates
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/sun-times?lat=40.7128&lon=-74.006&date=2026-06-21" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/sun-times?lat=40.7128&lon=-74.006&date=2026-06-21',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/sun-times',
+    params={
+        'lat': '40.7128',
+        'lon': '-74.006',
+        'date': '2026-06-21'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/sun-times`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `lat` | string | Yes |  |
+| `lon` | string | Yes |  |
+| `date` | string | No |  |
+
+## Find places along a route
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/along-route?from=5128581&to=2643743&radius=50&limit=25" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/along-route?from=5128581&to=2643743&radius=50&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/along-route',
+    params={
+        'from': '5128581',
+        'to': '2643743',
+        'radius': '50',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/along-route`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+| `radius` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `minPopulation` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+| `excludeCodes` | string | No |  |
+
+## Get extreme places
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/extremes?type=example&country=US" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/extremes?type=example&country=US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/extremes',
+    params={
+        'type': 'example',
+        'country': 'US'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/extremes`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `type` | string | No |  |
+| `country` | string | No |  |
+| `limit` | string | No |  |
+| `order` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+
+## Calculate geographic midpoint
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/midpoint?ids=5128581,2643743" \
@@ -633,180 +714,199 @@ curl "https://cities-api.p.rapidapi.com/places/midpoint?ids=5128581,2643743" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "midpoint": { "latitude": 52.34567, "longitude": -37.12345 },
-  "inputPlaces": [
-    { "id": 5128581, "name": "New York City" },
-    { "id": 2643743, "name": "London" }
-  ],
-  "nearestPlace": { "id": 3421319, "name": "Nuuk", "distanceFromMidpoint": 1245.3 }
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/midpoint?ids=5128581,2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Find the geographic midpoint of multiple places.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/midpoint',
+    params={
+        'ids': '5128581,2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
 `GET /places/midpoint`
 
-## Route
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ids` | string | Yes |  |
+
+## Calculate bearing between places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/route?ids=5128581,2643743,2988507" \
+curl "https://cities-api.p.rapidapi.com/places/bearing?from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Calculate an optimized route through multiple places (max 10).
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/bearing?from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/bearing',
+    params={
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/route`
+`GET /places/bearing`
 
-## Along Route
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Find places in same timezone
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/along-route?from=5128581&to=5368361&class=P" \
+curl "https://cities-api.p.rapidapi.com/places/same-timezone?id=5128581&limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Find places along a route between two points.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/same-timezone?id=5128581&limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/same-timezone',
+    params={
+        'id': '5128581',
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/along-route`
+`GET /places/same-timezone`
 
-## Compare Places
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `minPopulation` | string | No |  |
+
+## Find places by currency
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/compare?ids=5128581,2643743,2988507" \
+curl "https://cities-api.p.rapidapi.com/places/by-currency?code=US&limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Compare multiple places side by side (max 5).
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/by-currency?code=US&limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/by-currency',
+    params={
+        'code': 'US',
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/compare`
+`GET /places/by-currency`
 
-## Extremes
+### Query Parameters
 
-```shell
-curl "https://cities-api.p.rapidapi.com/places/extremes?country=US&class=P" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `minPopulation` | string | No |  |
 
-> Response:
-
-```json
-{
-  "northernmost": { "id": 5879400, "name": "Utqiagvik", "latitude": 71.29 },
-  "southernmost": { "id": 5856195, "name": "Hilo", "latitude": 19.73 },
-  "highest": { "id": 5427946, "name": "Leadville", "elevation": 3094 },
-  "mostPopulous": { "id": 5128581, "name": "New York City", "population": 8804190 }
-}
-```
-
-Find extreme places (northernmost, highest, etc).
-
-### HTTP Request
-
-`GET /places/extremes`
-
-## Sun Times
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "date": "2026-06-21",
-  "sun": {
-    "sunrise": "05:25",
-    "sunset": "20:31",
-    "solarNoon": "12:58",
-    "daylightHours": 15.1
-  },
-  "timezone": "America/New_York"
-}
-```
-
-Calculate sunrise, sunset, and day length.
-
-### HTTP Request
-
-`GET /places/:id/sun-times`
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `date` | Today | Date in YYYY-MM-DD format |
-
-## Sun Times (by Coordinates)
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/sun-times?latitude=40.7128&longitude=-74.006&date=2026-06-21" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get sun times for any coordinates.
-
-### HTTP Request
-
-`GET /places/sun-times`
-
-## Local Time
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/local-time" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "localTime": "2026-01-06T08:30:00-05:00",
-  "timezone": "America/New_York",
-  "utcOffset": -5
-}
-```
-
-Get current local time.
-
-### HTTP Request
-
-`GET /places/:id/local-time`
-
-## UTC Offset
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/utc-offset" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get UTC offset information.
-
-### HTTP Request
-
-`GET /places/:id/utc-offset`
-
-## Time at Coordinates
+## Get current time at coordinates
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/time-at?latitude=40.7128&longitude=-74.006" \
@@ -814,142 +914,195 @@ curl "https://cities-api.p.rapidapi.com/places/time-at?latitude=40.7128&longitud
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get current time at any coordinates.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/time-at?latitude=40.7128&longitude=-74.006',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/time-at',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get current time at specific geographic coordinates
 
 ### HTTP Request
 
 `GET /places/time-at`
 
-## Same Timezone
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+
+## Calculate route between waypoints
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/same-timezone?id=5128581" \
+curl "https://cities-api.p.rapidapi.com/places/route?ids=5128581,2643743&start=example&end=example" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Find other places in the same timezone.
-
-### HTTP Request
-
-`GET /places/same-timezone`
-
-## Places by Currency
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/by-currency?code=EUR" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Find places that use a specific currency.
-
-### HTTP Request
-
-`GET /places/by-currency`
-
-## Local Info
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/local-info" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "country": { "code": "US", "name": "United States", "capital": "Washington" },
-  "timezone": {
-    "id": "America/New_York",
-    "utcOffset": -5,
-    "currentLocalTime": "2026-01-06T08:30:00-05:00"
-  },
-  "currency": { "code": "USD", "name": "US Dollar" },
-  "phoneCode": "+1",
-  "languages": ["en-US", "es-US"]
-}
-```
-
-Get combined local information.
-
-### HTTP Request
-
-`GET /places/:id/local-info`
-
-## Population Rank
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/population-rank" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City", "population": 8804190 },
-  "rank": {
-    "country": 1,
-    "region": 1,
-    "world": 24
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/route?ids=5128581,2643743&start=example&end=example',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
 
-Get population rankings.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/route',
+    params={
+        'ids': '5128581,2643743',
+        'start': 'example',
+        'end': 'example'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/:id/population-rank`
+`GET /places/route`
 
-## Metro Area
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ids` | string | Yes |  |
+| `start` | string | No |  |
+| `end` | string | No |  |
+| `roundTrip` | string | No |  |
+
+## Compare two places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/metro-area" \
+curl "https://cities-api.p.rapidapi.com/places/compare?ids=5128581,2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get metropolitan area information.
-
-### HTTP Request
-
-`GET /places/:id/metro-area`
-
-## Climate Zone
-
-```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/climate-zone" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "climate": {
-    "zone": "Cfa",
-    "name": "Humid Subtropical",
-    "description": "Hot, humid summers and mild winters",
-    "hemisphere": "Northern",
-    "tropicalZone": false
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/compare?ids=5128581,2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
 
-Get Köppen climate classification.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/compare',
+    params={
+        'ids': '5128581,2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /places/:id/climate-zone`
+`GET /places/compare`
 
-## Antipode
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `ids` | string | Yes |  |
+
+## Get place by ID
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get detailed information about a specific place
+
+### HTTP Request
+
+`GET /places/{id}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get antipode
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/5128581/antipode" \
@@ -957,27 +1110,45 @@ curl "https://cities-api.p.rapidapi.com/places/5128581/antipode" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "antipode": { "latitude": -40.71427, "longitude": 105.99403 },
-  "nearestPlaceToAntipode": {
-    "id": 1796236,
-    "name": "Jiuquan",
-    "distanceFromAntipode": 2847.3
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/antipode',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
 
-Find the opposite point on Earth.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/antipode',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get the antipode (opposite point on Earth) for a place
 
 ### HTTP Request
 
-`GET /places/:id/antipode`
+`GET /places/{id}/antipode`
 
-## Hemisphere
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get hemisphere information
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/5128581/hemisphere" \
@@ -985,75 +1156,396 @@ curl "https://cities-api.p.rapidapi.com/places/5128581/hemisphere" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "hemisphere": {
-    "northSouth": "Northern",
-    "eastWest": "Western"
-  },
-  "distanceFromEquator": 4524.8,
-  "distanceFromPrimeMeridian": 5570.1
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/hemisphere',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Get hemisphere location.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/hemisphere',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get hemisphere and geographical position information
 
 ### HTTP Request
 
-`GET /places/:id/hemisphere`
+`GET /places/{id}/hemisphere`
 
-## Nearby Airports
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Find nearby places
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/airports" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50&limit=25" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "place": { "id": 5128581, "name": "New York City" },
-  "airports": [
-    { "id": 5122432, "name": "John F Kennedy International Airport", "distance": 19.2 },
-    { "id": 5124497, "name": "LaGuardia Airport", "distance": 12.8 }
-  ],
-  "hasMore": false,
-  "searchRadius": 100,
-  "unit": "km"
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Find airports near a place.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/nearby',
+    params={
+        'radius': '50',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Find places near a specific place
 
 ### HTTP Request
 
-`GET /places/:id/airports`
+`GET /places/{id}/nearby`
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `radius` | 100 | Search radius in km |
-| `limit` | 10 | Maximum results |
+### Query Parameters
 
-## Nearby Seaports
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `radius` | string | No |  |
+| `limit` | string | No |  |
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get sun times
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/places/5128581/seaports" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Find seaports near a place.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/sun-times?date=2026-06-21',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/sun-times',
+    params={
+        'date': '2026-06-21'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get sunrise, sunset, and day length information
 
 ### HTTP Request
 
-`GET /places/:id/seaports`
+`GET /places/{id}/sun-times`
 
-## Shipping Hub
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `date` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get local information
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/local-info" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/local-info',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/local-info',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get timezone, currency, phone code, and language information
+
+### HTTP Request
+
+`GET /places/{id}/local-info`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get local time
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/local-time" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/local-time',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/local-time',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get the current local time at a place
+
+### HTTP Request
+
+`GET /places/{id}/local-time`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get UTC offset
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/utc-offset" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/utc-offset',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/utc-offset',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get UTC offset and timezone information
+
+### HTTP Request
+
+`GET /places/{id}/utc-offset`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get climate zone
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/climate-zone" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/climate-zone',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/climate-zone',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/{id}/climate-zone`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get metro area
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/metro-area?radius=50" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/metro-area?radius=50',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/metro-area',
+    params={
+        'radius': '50'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get metro area information including nearby populated places and aggregated population statistics
+
+### HTTP Request
+
+`GET /places/{id}/metro-area`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `radius` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get shipping hub information
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/places/5128581/shipping-hub" \
@@ -1061,312 +1553,487 @@ curl "https://cities-api.p.rapidapi.com/places/5128581/shipping-hub" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Find the nearest shipping/logistics hub.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/shipping-hub',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/shipping-hub',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Analyzes if a place is a shipping hub based on nearby ports, airports, and population
 
 ### HTTP Request
 
-`GET /places/:id/shipping-hub`
+`GET /places/{id}/shipping-hub`
 
-# Countries
+### Path Parameters
 
-## List Countries
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get parent place
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries" \
+curl "https://cities-api.p.rapidapi.com/places/5128581/parent" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get all countries with pagination.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/parent',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/parent',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/{id}/parent`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get child places
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/children?class=P&featureCode=PPL" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/children?class=P&featureCode=PPL',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/children',
+    params={
+        'class': 'P',
+        'featureCode': 'PPL'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/{id}/children`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `class` | string | No |  |
+| `featureCode` | string | No |  |
+| `excludeCodes` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get alternate names
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/names?language=es" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/names?language=es',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/names',
+    params={
+        'language': 'es'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/{id}/names`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `language` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get population rank for place
+
+```shell
+curl "https://cities-api.p.rapidapi.com/places/5128581/population-rank" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/places/5128581/population-rank',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/places/5128581/population-rank',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /places/{id}/population-rank`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+# Countries
+
+## List all countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
 `GET /countries`
 
-## Get Country
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List landlocked countries
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/US" \
+curl "https://cities-api.p.rapidapi.com/countries/landlocked?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "iso": "US",
-  "iso3": "USA",
-  "isoNumeric": "840",
-  "fips": "US",
-  "name": "United States",
-  "capital": "Washington",
-  "areaSqKm": 9629091,
-  "population": 327167434,
-  "continent": "NA",
-  "tld": ".us",
-  "currencyCode": "USD",
-  "currencyName": "Dollar",
-  "phone": "1",
-  "postalCodeFormat": "#####-####",
-  "postalCodeRegex": "^\\d{5}(-\\d{4})?$",
-  "languages": "en-US,es-US,haw,fr",
-  "geonameid": 6252001,
-  "neighbours": "CA,MX,CU",
-  "equivalentFipsCode": null
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/landlocked?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Get country details.
+```python
+import requests
 
-### HTTP Request
-
-`GET /countries/:code`
-
-## Neighbors
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/FR/neighbors" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/landlocked',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
-
-> Response:
-
-```json
-{
-  "country": { "code": "FR", "name": "France" },
-  "neighbors": [
-    { "code": "DE", "name": "Germany" },
-    { "code": "ES", "name": "Spain" },
-    { "code": "IT", "name": "Italy" },
-    { "code": "BE", "name": "Belgium" },
-    { "code": "CH", "name": "Switzerland" }
-  ]
-}
-```
-
-Get bordering countries.
-
-### HTTP Request
-
-`GET /countries/:code/neighbors`
-
-## Country Stats
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/US/stats" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Get detailed statistics about a country.
-
-### HTTP Request
-
-`GET /countries/:code/stats`
-
-## Compare Countries
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/compare?codes=US,JP,DE" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Compare multiple countries (max 5).
-
-### HTTP Request
-
-`GET /countries/compare`
-
-## Landlocked
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/landlocked" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Countries without coastline.
 
 ### HTTP Request
 
 `GET /countries/landlocked`
 
-## Islands
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List island nations
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/islands" \
+curl "https://cities-api.p.rapidapi.com/countries/islands?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Island nations.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/islands?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/islands',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
 `GET /countries/islands`
 
-## Largest
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## Get country postal format
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/largest?by=area" \
+curl "https://cities-api.p.rapidapi.com/countries/format/US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Largest countries by area or population.
-
-### HTTP Request
-
-`GET /countries/largest`
-
-| Parameter | Default | Values |
-|-----------|---------|--------|
-| `by` | area | `area`, `population` |
-
-## Smallest
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/smallest?by=area" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Smallest countries by area or population.
-
-### HTTP Request
-
-`GET /countries/smallest`
-
-## By Currency
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/by-currency/EUR" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Countries using a currency.
-
-### HTTP Request
-
-`GET /countries/by-currency/:code`
-
-## By Language
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/by-language/es" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Countries where a language is spoken.
-
-### HTTP Request
-
-`GET /countries/by-language/:code`
-
-## By Phone Code
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/by-phone-code/1" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Countries by phone country code.
-
-### HTTP Request
-
-`GET /countries/by-phone-code/:code`
-
-## By TLD
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/by-tld/.de" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Country by top-level domain.
-
-### HTTP Request
-
-`GET /countries/by-tld/:tld`
-
-## By Driving Side
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/driving-side/left" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-Countries by driving side (left or right).
-
-### HTTP Request
-
-`GET /countries/driving-side/:side`
-
-## Electrical Standards
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/US/electrical" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
-
-> Response:
-
-```json
-{
-  "country": "US",
-  "countryName": "United States",
-  "electrical": {
-    "voltage": 120,
-    "frequency": 60,
-    "plugTypes": ["A", "B"]
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/format/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
 
-Voltage and plug types.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/format/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /countries/:code/electrical`
+`GET /countries/format/{code}`
 
-## Localization
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get country names in all languages
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/localization/DE" \
+curl "https://cities-api.p.rapidapi.com/countries/localization/US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Localization settings (languages, number format).
-
-### HTTP Request
-
-`GET /countries/localization/:code`
-
-## Format
-
-```shell
-curl "https://cities-api.p.rapidapi.com/countries/format/JP" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/localization/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Date format, measurement system, driving side.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/localization/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /countries/format/:code`
+`GET /countries/localization/{code}`
 
-## Calling Info
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get country calling code
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/countries/calling/US" \
@@ -1374,128 +2041,1230 @@ curl "https://cities-api.p.rapidapi.com/countries/calling/US" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Phone calling information.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/calling/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/calling/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /countries/calling/:code`
+`GET /countries/calling/{code}`
 
-## Major Cities
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get major cities in country
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/major-cities/JP" \
+curl "https://cities-api.p.rapidapi.com/countries/major-cities/US?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Largest cities in a country.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/major-cities/US?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/major-cities/US',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /countries/major-cities/:code`
+`GET /countries/major-cities/{code}`
 
-# International Organizations
+### Query Parameters
 
-## G7 Members
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get largest countries by area
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/countries/g7" \
+curl "https://cities-api.p.rapidapi.com/countries/largest?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/largest?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
 
-```json
-{
-  "organization": "G7",
-  "description": "Group of Seven major advanced economies",
-  "countries": [
-    { "code": "US", "name": "United States" },
-    { "code": "JP", "name": "Japan" },
-    { "code": "DE", "name": "Germany" }
-  ],
-  "hasMore": true
-}
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/largest',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/largest`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## Get smallest countries by area
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/smallest?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/smallest?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/smallest',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/smallest`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## Get countries by currency
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-currency/US" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/by-currency/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/by-currency/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/by-currency/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get countries by language
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-language/US?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/by-language/US?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/by-language/US',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/by-language/{code}`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get countries by driving side
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/driving-side/left?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/driving-side/left?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/driving-side/left',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/driving-side/{side}`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `side` | string | Yes |  |
+
+## Get country by TLD
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-tld/.de" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/by-tld/.de',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/by-tld/.de',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/by-tld/{tld}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tld` | string | Yes |  |
+
+## Get countries by phone code
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/by-phone-code/US" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/by-phone-code/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/by-phone-code/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/by-phone-code/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## List EU member countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/eu-members?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/eu-members?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/eu-members',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/eu-members`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List Schengen Area countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/schengen?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/schengen?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/schengen',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/schengen`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List NATO member countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/nato-members?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/nato-members?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/nato-members',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/nato-members`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List G7 countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/g7?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/g7?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/g7',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
 
 ### HTTP Request
 
 `GET /countries/g7`
 
-## G20 Members
+### Query Parameters
 
-`GET /countries/g20`
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
 
-## BRICS Members
-
-`GET /countries/brics`
-
-## OPEC Members
-
-`GET /countries/opec`
-
-## NATO Members
-
-`GET /countries/nato-members`
-
-## EU Members
-
-`GET /countries/eu-members`
-
-## Schengen Area
-
-`GET /countries/schengen`
-
-## Commonwealth
-
-`GET /countries/commonwealth`
-
-## UN Members
-
-`GET /countries/un-members`
-
-# Timezones
-
-## List Timezones
+## List G20 countries
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/timezones" \
+curl "https://cities-api.p.rapidapi.com/countries/g20?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/g20?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/g20',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/g20`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List BRICS countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/brics?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/brics?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/brics',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/brics`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List OPEC countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/opec?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/opec?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/opec',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/opec`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List Commonwealth countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/commonwealth?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/commonwealth?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/commonwealth',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/commonwealth`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## List UN member countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/un-members?limit=25&offset=0" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/un-members?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/un-members',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/un-members`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+| `continent` | string | No |  |
+| `sort` | string | No |  |
+
+## Compare two countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/compare?codes=US,JP,DE" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/compare?codes=US,JP,DE',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/compare',
+    params={
+        'codes': 'US,JP,DE'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/compare`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `codes` | string | Yes |  |
+
+## Get country by code
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/US" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get electrical standards for country
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/US/electrical" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/US/electrical',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/US/electrical',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/{code}/electrical`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get neighboring countries
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/US/neighbors" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/US/neighbors',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/US/neighbors',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/{code}/neighbors`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get country statistics
+
+```shell
+curl "https://cities-api.p.rapidapi.com/countries/US/stats" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/countries/US/stats',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/countries/US/stats',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /countries/{code}/stats`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+# Timezones
+
+## List all timezones
+
+```shell
+curl "https://cities-api.p.rapidapi.com/timezones?country=US&limit=25" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/timezones?country=US&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/timezones',
+    params={
+        'country': 'US',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get a paginated list of all timezones, optionally filtered by country code
 
 ### HTTP Request
 
 `GET /timezones`
 
-## Get Timezone
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
+## Get timezone by ID
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/timezones/America-New_York" \
+curl "https://cities-api.p.rapidapi.com/timezones/5128581" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "timezoneId": "America/New_York",
-  "countryCode": "US",
-  "gmtOffset": -5,
-  "dstOffset": -4,
-  "rawOffset": -5
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/timezones/5128581',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Note: Use `-` instead of `/` in timezone IDs (e.g., `America-New_York`).
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/timezones/5128581',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get detailed information about a specific timezone, including current time. The ID can use hyphens instead of slashes (e.g., America-New_York)
 
 ### HTTP Request
 
-`GET /timezones/:id`
+`GET /timezones/{id}`
 
-## Timezone at Location
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | string | Yes |  |
+
+## Get timezone at coordinates
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/timezone-at?latitude=40.7128&longitude=-74.006" \
@@ -1503,13 +3272,50 @@ curl "https://cities-api.p.rapidapi.com/timezone-at?latitude=40.7128&longitude=-
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get timezone for coordinates.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/timezone-at?latitude=40.7128&longitude=-74.006',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/timezone-at',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Find the timezone at a specific geographic location by finding the nearest city with timezone information
 
 ### HTTP Request
 
 `GET /timezone-at`
 
-## Time Difference
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+
+## Calculate time difference between places
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/time-difference?from=5128581&to=2643743" \
@@ -1517,232 +3323,742 @@ curl "https://cities-api.p.rapidapi.com/time-difference?from=5128581&to=2643743"
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "from": { "id": 5128581, "name": "New York City", "timezone": "America/New_York" },
-  "to": { "id": 2643743, "name": "London", "timezone": "Europe/London" },
-  "difference": {
-    "hours": 5,
-    "description": "London is 5 hours ahead"
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/time-difference?from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
   }
-}
+);
+const data = await response.json();
 ```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/time-difference',
+    params={
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Calculate the time difference between two places, showing their current local times and UTC offsets
 
 ### HTTP Request
 
 `GET /time-difference`
 
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
 # Postal Codes
 
-## Search Postal Codes
+## List all postal codes
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes?country=US" \
+curl "https://cities-api.p.rapidapi.com/postal-codes?country=US&q=New" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/postal-codes?country=US&q=New',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/postal-codes',
+    params={
+        'country': 'US',
+        'q': 'New'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get a paginated list of postal codes for a specific country, with optional search prefix
 
 ### HTTP Request
 
 `GET /postal-codes`
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `country` | Yes | ISO country code |
+### Query Parameters
 
-## Lookup Postal Code
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | No |  |
+| `q` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
+## Find nearby postal codes
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes/US/10001" \
+curl "https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&longitude=-74.006&radius=50&limit=25" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "postalCodes": [
-    {
-      "postalCode": "10001",
-      "placeName": "New York",
-      "region": "New York",
-      "regionCode": "NY",
-      "latitude": 40.7484,
-      "longitude": -73.9967
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&longitude=-74.006&radius=50&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
     }
-  ],
-  "hasMore": false,
-  "nextPage": null,
-  "country": "US"
-}
+  }
+);
+const data = await response.json();
 ```
 
-### HTTP Request
+```python
+import requests
 
-`GET /postal-codes/:country/:code`
-
-## Nearby Postal Codes
-
-```shell
-curl "https://cities-api.p.rapidapi.com/postal-codes/nearby?latitude=40.7128&longitude=-74.006" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/postal-codes/nearby',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006',
+        'radius': '50',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
+
+Find postal codes near a geographic location, sorted by distance
 
 ### HTTP Request
 
 `GET /postal-codes/nearby`
 
-# Airports
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+| `radius` | string | No |  |
+| `limit` | string | No |  |
+
+## Lookup postal code
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/airports?country=US&q=John" \
+curl "https://cities-api.p.rapidapi.com/postal-codes/US/US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Search airports by country and name.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/postal-codes/US/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/postal-codes/US/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get detailed information about a specific postal code in a country. A single postal code may cover multiple places.
+
+### HTTP Request
+
+`GET /postal-codes/{country}/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | Yes |  |
+| `code` | string | Yes |  |
+
+# Airports
+
+## List all airports
+
+```shell
+curl "https://cities-api.p.rapidapi.com/airports?country=US&q=New" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/airports?country=US&q=New',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/airports',
+    params={
+        'country': 'US',
+        'q': 'New'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get a paginated list of airports worldwide, with optional filters by country and search query
 
 ### HTTP Request
 
 `GET /airports`
 
-| Parameter | Description |
-|-----------|-------------|
-| `country` | ISO country code |
-| `q` | Search by name |
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | No |  |
+| `q` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
 
 # Seaports
 
+## List all seaports
+
 ```shell
-curl "https://cities-api.p.rapidapi.com/seaports?country=NL" \
+curl "https://cities-api.p.rapidapi.com/seaports?country=US&q=New" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Search seaports by country and name.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/seaports?country=US&q=New',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/seaports',
+    params={
+        'country': 'US',
+        'q': 'New'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get a paginated list of seaports, harbors, and marinas worldwide, with optional filters by country and search query
 
 ### HTTP Request
 
 `GET /seaports`
 
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | No |  |
+| `q` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
 # Capitals
 
+## List capital cities
+
 ```shell
-curl "https://cities-api.p.rapidapi.com/capitals" \
+curl "https://cities-api.p.rapidapi.com/capitals?continent=example&limit=25" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-List all world capital cities.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/capitals?continent=example&limit=25',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/capitals',
+    params={
+        'continent': 'example',
+        'limit': '25'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Get a paginated list of capital cities worldwide, ordered by population. Optional continent filter.
 
 ### HTTP Request
 
 `GET /capitals`
 
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `continent` | string | No |  |
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
 # Unit Conversion
 
 All API responses use metric units (km, m, km²). Use these endpoints to convert.
 
-## Distance
+## Convert distance units
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/distance?value=100&from=km&to=mi" \
+curl "https://cities-api.p.rapidapi.com/convert/distance?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "original": { "value": 100, "unit": "km" },
-  "converted": { "value": 62.137119, "unit": "mi" }
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/distance?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Units: `km`, `mi`, `m`, `ft`, `nm` (nautical miles)
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/distance',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between distance units: km, mi, nm, m, ft
 
 ### HTTP Request
 
 `GET /convert/distance`
 
-## Elevation
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Convert elevation units
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/elevation?value=3000&from=m&to=ft" \
+curl "https://cities-api.p.rapidapi.com/convert/elevation?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Units: `m`, `ft`
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/elevation?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/elevation',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between elevation units: m, ft
 
 ### HTTP Request
 
 `GET /convert/elevation`
 
-## Area
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Convert area units
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/area?value=1000&from=sqkm&to=sqmi" \
+curl "https://cities-api.p.rapidapi.com/convert/area?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Units: `sqkm`, `sqmi`, `ha`, `acre`
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/area?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/area',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between area units: sqkm, sqmi, ha, acre
 
 ### HTTP Request
 
 `GET /convert/area`
 
-## Temperature
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Convert temperature units
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/temperature?value=20&from=c&to=f" \
+curl "https://cities-api.p.rapidapi.com/convert/temperature?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Units: `c`, `f`, `k`
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/temperature?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/temperature',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between temperature units: c (Celsius), f (Fahrenheit), k (Kelvin)
 
 ### HTTP Request
 
 `GET /convert/temperature`
 
-## Speed
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Convert speed units
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/speed?value=100&from=kmh&to=mph" \
+curl "https://cities-api.p.rapidapi.com/convert/speed?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Units: `kmh`, `mph`, `knots`, `ms`
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/speed?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/speed',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between speed units: kmh, mph, knots, ms
 
 ### HTTP Request
 
 `GET /convert/speed`
 
-## Coordinates
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
+## Convert coordinate formats
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/convert/coordinates?value=40.7128,-74.006&from=dd&to=dms" \
+curl "https://cities-api.p.rapidapi.com/convert/coordinates?value=100&from=5128581&to=2643743" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Convert between decimal degrees and degrees-minutes-seconds.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/convert/coordinates?value=100&from=5128581&to=2643743',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/convert/coordinates',
+    params={
+        'value': '100',
+        'from': '5128581',
+        'to': '2643743'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Convert between decimal degrees (dd) and degrees-minutes-seconds (dms) formats
 
 ### HTTP Request
 
 `GET /convert/coordinates`
 
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes |  |
+| `from` | string | Yes |  |
+| `to` | string | Yes |  |
+
 # Reference
 
-## Feature Classes
+## List all feature codes
+
+```shell
+curl "https://cities-api.p.rapidapi.com/feature-codes?class=P" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/feature-codes?class=P',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/feature-codes',
+    params={
+        'class': 'P'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /feature-codes`
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `class` | string | No |  |
+
+## List all feature classes
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/feature-classes" \
@@ -1750,79 +4066,184 @@ curl "https://cities-api.p.rapidapi.com/feature-classes" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-All feature classes with counts.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/feature-classes',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/feature-classes',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
 `GET /feature-classes`
 
-## Feature Codes
+## List all phone codes
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/feature-codes" \
+curl "https://cities-api.p.rapidapi.com/phone-codes?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-All GeoNames feature codes.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/phone-codes?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/phone-codes',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
 
 ### HTTP Request
 
-`GET /feature-codes`
+`GET /phone-codes`
 
-## Currencies
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
+## List all currencies
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/currencies" \
+curl "https://cities-api.p.rapidapi.com/currencies?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/currencies?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/currencies',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
 
 ### HTTP Request
 
 `GET /currencies`
 
-## Languages
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
+
+## List all languages
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/languages" \
+curl "https://cities-api.p.rapidapi.com/languages?limit=25&offset=0" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/languages?limit=25&offset=0',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/languages',
+    params={
+        'limit': '25',
+        'offset': '0'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
 
 ### HTTP Request
 
 `GET /languages`
 
-## Get Language
+### Query Parameters
 
-```shell
-curl "https://cities-api.p.rapidapi.com/languages/es" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
-```
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | string | No |  |
+| `offset` | string | No |  |
 
-> Response:
-
-```json
-{
-  "code": "es",
-  "name": "Spanish",
-  "nativeName": "Español",
-  "family": "Indo-European",
-  "countries": [
-    { "code": "ES", "name": "Spain" },
-    { "code": "MX", "name": "Mexico" }
-  ],
-  "countryCount": 21
-}
-```
-
-### HTTP Request
-
-`GET /languages/:code`
-
-## Continents
+## List all continents
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/continents" \
@@ -1830,39 +4251,127 @@ curl "https://cities-api.p.rapidapi.com/continents" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/continents',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/continents',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
 ### HTTP Request
 
 `GET /continents`
 
-## Get Continent
+## Get continent by code
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/continents/EU" \
+curl "https://cities-api.p.rapidapi.com/continents/US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Get continent details with countries.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/continents/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
 
-### HTTP Request
+```python
+import requests
 
-`GET /continents/:code`
-
-## Phone Codes
-
-```shell
-curl "https://cities-api.p.rapidapi.com/phone-codes" \
-  -H "X-RapidAPI-Key: YOUR_API_KEY" \
-  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/continents/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
 ```
 
 ### HTTP Request
 
-`GET /phone-codes`
+`GET /continents/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
+
+## Get language by code
+
+```shell
+curl "https://cities-api.p.rapidapi.com/languages/US" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY" \
+  -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
+```
+
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/languages/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/languages/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+### HTTP Request
+
+`GET /languages/{code}`
+
+### Path Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `code` | string | Yes |  |
 
 # Validation
 
-## Validate Coordinates
+## Validate coordinates
 
 ```shell
 curl "https://cities-api.p.rapidapi.com/validate/coordinates?latitude=40.7128&longitude=-74.006" \
@@ -1870,59 +4379,93 @@ curl "https://cities-api.p.rapidapi.com/validate/coordinates?latitude=40.7128&lo
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-> Response:
-
-```json
-{
-  "valid": true,
-  "latitude": 40.7128,
-  "longitude": -74.006,
-  "onLand": true,
-  "country": { "code": "US", "name": "United States" },
-  "nearestPlace": { "name": "New York City", "distance": 0.2 }
-}
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/validate/coordinates?latitude=40.7128&longitude=-74.006',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
 ```
 
-Check if coordinates are valid and on land.
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/validate/coordinates',
+    params={
+        'latitude': '40.7128',
+        'longitude': '-74.006'
+    },
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Validate geographic coordinates and check if they are on land
 
 ### HTTP Request
 
 `GET /validate/coordinates`
 
-## Validate Postal Code
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `latitude` | string | Yes |  |
+| `longitude` | string | Yes |  |
+
+## Validate postal code format
 
 ```shell
-curl "https://cities-api.p.rapidapi.com/validate/postal-code/US/10001" \
+curl "https://cities-api.p.rapidapi.com/validate/postal-code/US/US" \
   -H "X-RapidAPI-Key: YOUR_API_KEY" \
   -H "X-RapidAPI-Host: cities-api.p.rapidapi.com"
 ```
 
-Check if a postal code exists.
+```javascript
+const response = await fetch(
+  'https://cities-api.p.rapidapi.com/validate/postal-code/US/US',
+  {
+    headers: {
+      'X-RapidAPI-Key': 'YOUR_API_KEY',
+      'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+  }
+);
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://cities-api.p.rapidapi.com/validate/postal-code/US/US',
+    headers={
+        'X-RapidAPI-Key': 'YOUR_API_KEY',
+        'X-RapidAPI-Host': 'cities-api.p.rapidapi.com'
+    }
+)
+data = response.json()
+```
+
+Check if a postal code exists for a given country
 
 ### HTTP Request
 
-`GET /validate/postal-code/:country/:code`
+`GET /validate/postal-code/{country}/{code}`
 
-# Errors
+### Path Parameters
 
-> Error format:
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country` | string | Yes |  |
+| `code` | string | Yes |  |
 
-```json
-{
-  "error": {
-    "message": "Place not found",
-    "status": 404
-  }
-}
-```
-
-| Code | Meaning |
-|------|---------|
-| 200 | Success (even if results are empty) |
-| 400 | Bad Request — missing or invalid parameters |
-| 401 | Unauthorized — invalid API key |
-| 404 | Not Found — resource doesn't exist |
-| 500 | Server Error |
-| 504 | Timeout — query took too long |
-
-**Note:** Empty results return `200` with an empty array (e.g., `{ "places": [] }`), not `404`.
