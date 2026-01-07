@@ -65,11 +65,11 @@ See how developers use the Cities API to build powerful features in just a few c
 
 | Step | What | Endpoint | Result |
 |------|------|----------|--------|
-| 1 | Find Switzerland | `/places?class=A&q=Switzerland` | Country code → CH |
-| 2 | Discover mountain code | `/feature-codes?class=T` | Mountain → MT |
-| 3 | Find high peaks | `/places?country=CH&class=T&featureCode=MT&minElevation=3000` | Dom (4545m), Matterhorn (4478m) |
-| 4 | Check airport access | `/places/2659729/nearby?class=S&featureCode=AIRP&radius=100` | Sion Airport (37km) |
-| 5 | Find lodging | `/places/2659729/nearby?class=P&radius=30` | Breuil-Cervinia (5km, pop: 753) |
+| 1 | Find Switzerland | `/places` + `class=A&q=Switzerland` | Country code → CH |
+| 2 | Discover mountain code | `/feature-codes` + `class=T` | Mountain → MT |
+| 3 | Find high peaks | `/places` + `country=CH&class=T&featureCode=MT` | Dom (4545m), Matterhorn (4478m) |
+| 4 | Check airport access | `/places/{id}/nearby` + `class=S&featureCode=AIRP` | Sion Airport (37km) |
+| 5 | Find lodging | `/places/{id}/nearby` + `class=P&radius=30` | Breuil-Cervinia (5km, pop: 753) |
 
 **How this works:** Start with a country name search, discover the right feature codes, then filter precisely by elevation. No guessing codes — the API tells you what's available.
 
@@ -80,9 +80,9 @@ See how developers use the Cities API to build powerful features in just a few c
 | Step | What | Endpoint | Result |
 |------|------|----------|--------|
 | 1 | Discover city class | `/feature-classes` | Populated places → P |
-| 2 | Find major port city | `/places?class=P&q=Rotterdam&country=NL&minPopulation=100000` | Rotterdam (868k pop) |
-| 3 | Find nearby seaports | `/seaports?q=Rotterdam&limit=5` | Waalhaven Port, Rotterdam Port |
-| 4 | Find cargo airports | `/places/2747891/nearby?class=S&featureCode=AIRP&radius=80` | Rotterdam The Hague Airport (4.7km) |
+| 2 | Find major port city | `/places` + `q=Rotterdam&country=NL` | Rotterdam (868k pop) |
+| 3 | Find nearby seaports | `/seaports` + `q=Rotterdam` | Waalhaven Port, Rotterdam Port |
+| 4 | Find cargo airports | `/places/{id}/nearby` + `class=S&featureCode=AIRP` | Rotterdam Airport (4.7km) |
 
 **How this works:** Discover available classes and codes first, search by name with population filters, then use proximity endpoints. The API guides you through what's available.
 
@@ -92,11 +92,11 @@ See how developers use the Cities API to build powerful features in just a few c
 
 | Step | What | Endpoint | Result |
 |------|------|----------|--------|
-| 1 | Find Thailand code | `/places?class=P&q=Bangkok&country=TH` | Bangkok → TH |
+| 1 | Find Thailand code | `/places` + `q=Bangkok&country=TH` | Bangkok → TH |
 | 2 | Discover city class | `/feature-classes` | Populated places → P |
-| 3 | Find mid-size Thai cities | `/places?country=TH&class=P&q=Chiang` | Chiang Mai (127k pop) |
-| 4 | Check timezone | `/places/1153671` | UTC+7 (Asia/Bangkok), THB currency |
-| 5 | Verify airport access | `/places/1153671/nearby?class=S&featureCode=AIRP&radius=100` | Chiang Mai Intl (3.2km) |
+| 3 | Find mid-size Thai cities | `/places` + `country=TH&q=Chiang` | Chiang Mai (127k pop) |
+| 4 | Check timezone | `/places/{id}` | UTC+7 (Asia/Bangkok), THB |
+| 5 | Verify airport access | `/places/{id}/nearby` + `class=S` | Chiang Mai Intl (3.2km) |
 
 **How this works:** Find country codes from city searches, discover feature classes for filtering, then narrow down with population ranges. Local info gives timezone for remote meetings, and nearby airport means easy travel.
 
@@ -106,13 +106,13 @@ See how developers use the Cities API to build powerful features in just a few c
 
 | Step | What | Endpoint | Result |
 |------|------|----------|--------|
-| 1 | Discover feature types | `/feature-classes` | Terrain → class T, Populated → class P |
-| 2 | Discover terrain codes | `/feature-codes?class=T` | Mountain → code MT |
-| 3 | Find Mount Everest | `/places?country=NP&class=T&featureCode=MT&minElevation=8000` | Mount Everest (id: 1283416), 8,848m |
-| 4 | Calculate antipode | `/places/1283416/antipode` | -27.99°S, -93.07°W (Pacific Ocean) |
-| 5 | Find nearest city | `/places/reverse?latitude=-27.99&longitude=-93.07` | San Juan Bautista, Chile (1,496 km) |
-| 6 | Get climate zone | `/places/3873019/climate-zone` | Cfa (Humid Subtropical) |
-| 7 | Get sunrise tomorrow | `/places/3873019/sun-times?date=2026-01-07` | Sunrise: 04:53 (America/Santiago) |
+| 1 | Discover feature types | `/feature-classes` | Terrain → T, Populated → P |
+| 2 | Discover terrain codes | `/feature-codes` + `class=T` | Mountain → MT |
+| 3 | Find Mount Everest | `/places` + `country=NP&class=T` | Mount Everest (id: 1283416) |
+| 4 | Calculate antipode | `/places/{id}/antipode` | -27.99°S, -93.07°W |
+| 5 | Find nearest city | `/places/reverse` + `lat/lng` | San Juan Bautista, Chile |
+| 6 | Get climate zone | `/places/{id}/climate-zone` | Cfa (Humid Subtropical) |
+| 7 | Get sunrise tomorrow | `/places/{id}/sun-times` | Sunrise: 04:53 |
 
 **How this works:** Start by discovering what feature classes exist (terrain vs populated places), then find specific codes (mountains). Search for the highest peaks in Nepal to locate Everest. Use the antipode endpoint to calculate the exact opposite point on Earth. Find the nearest populated place using reverse geocoding. Finally, get climate classification and astronomical data for that remote Chilean island town.
 
@@ -123,18 +123,18 @@ See how developers use the Cities API to build powerful features in just a few c
 | Step | What | Endpoint | Result |
 |------|------|----------|--------|
 | 1 | Discover continents | `/continents` | Europe → EU |
-| 2 | Find Nordic countries | `/countries?continent=EU&limit=100` | NO, SE, FI, DK, IS |
-| 3 | Check EU membership | `/countries/eu-members` | SE, FI, DK in EU → Norway (NO) not |
-| 4 | Discover city class | `/feature-classes` | Populated places → class P |
-| 5 | Find top Norwegian cities | `/places?country=NO&class=P&limit=5` | 1. Oslo (1.08M), 2. Bergen (294k) |
-| 6 | Get Bergen postal code | `/postal-codes/nearby?latitude=60.39&longitude=5.32` | 5003 Bergen |
-| 7 | Find nearest airport | `/places/3161732/nearby?class=S&featureCode=AIRP&radius=50` | Bergen Flesland (12.5 km) |
-| 8 | Get Norway's neighbors | `/countries/NO/neighbors` | FI, RU, SE (all except RU in EU) |
-| 9 | Find nearest EU capital | `/countries/SE` → `/places/distance` | Stockholm (720.1 km) |
-| 10 | Convert to miles | `/convert/distance?value=720.1&from=km&to=mi` | 447.45 miles |
-| 11 | Compare timezones | `/places/.../` for both | Europe/Oslo vs Europe/Stockholm = 0 hrs |
-| 12 | Compare currencies | Country endpoints | NOK (Krone) vs SEK (Krona) |
-| 13 | Compare electrical | `/countries/NO/electrical` + `/countries/SE/electrical` | Identical: 230V, 50Hz, C & F |
+| 2 | Find Nordic countries | `/countries` + `continent=EU` | NO, SE, FI, DK, IS |
+| 3 | Check EU membership | `/countries/eu-members` | Norway (NO) not in EU |
+| 4 | Discover city class | `/feature-classes` | Populated places → P |
+| 5 | Find top Norwegian cities | `/places` + `country=NO` | Oslo (1.08M), Bergen (294k) |
+| 6 | Get Bergen postal code | `/postal-codes/nearby` + `lat/lng` | 5003 Bergen |
+| 7 | Find nearest airport | `/places/{id}/nearby` + `class=S` | Bergen Flesland (12.5km) |
+| 8 | Get Norway's neighbors | `/countries/NO/neighbors` | FI, RU, SE |
+| 9 | Find nearest EU capital | `/places/distance` | Stockholm (720.1 km) |
+| 10 | Convert to miles | `/convert/distance` | 447.45 miles |
+| 11 | Compare timezones | `/places/{id}` | Oslo vs Stockholm = 0 hrs |
+| 12 | Compare currencies | `/countries/{code}` | NOK vs SEK |
+| 13 | Compare electrical | `/countries/{code}/electrical` | Identical: 230V, 50Hz |
 
 **How this works:** Start by discovering continents, find Nordic countries in Europe. Use the EU membership endpoint to identify which Nordic country isn't in the EU (Norway). Discover the populated places class, then list Norwegian cities by population to find the second-largest (Bergen). Use coordinate-based postal code lookup, find the nearest airport, get Norway's neighbors to identify which are in the EU. Calculate distances to neighboring capitals, convert units, and compare local info and electrical standards.
 
