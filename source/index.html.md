@@ -50,7 +50,7 @@ curl "https://cities-api.p.rapidapi.com/places?country=CH&class=H&featureCode=LK
 curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElevation=4000"
 ```
 
-**Consistent responses everywhere.** Every list endpoint returns the same structure: `data`, `hasMore`, and `nextPage`. Every error follows the same format. No surprises.
+**Consistent responses everywhere.** Every list endpoint returns descriptive field names (`places`, `countries`, `timezones`, etc.) with `hasMore` and `nextPage` for pagination. Every error follows the same format. No surprises.
 
 ## Quick Examples
 
@@ -166,13 +166,13 @@ All requests require authentication via RapidAPI:
 
 ```json
 {
-  "data": [...],
+  "places": [...],
   "hasMore": true,
   "nextPage": "/places?country=US&class=P&offset=25&limit=25"
 }
 ```
 
-List endpoints return paginated results:
+List endpoints return paginated results with descriptive field names:
 
 | Parameter | Default | Max | Description |
 |-----------|---------|-----|-------------|
@@ -223,7 +223,7 @@ response = requests.get(
 
 ```json
 {
-  "data": [
+  "places": [
     {
       "id": 5128581,
       "name": "New York City",
@@ -368,7 +368,7 @@ curl "https://cities-api.p.rapidapi.com/places/5332921/children?class=P&limit=10
 ```json
 {
   "place": { "id": 5332921, "name": "California" },
-  "data": [
+  "places": [
     { "id": 5368361, "name": "Los Angeles", "population": 3898747 },
     { "id": 5391959, "name": "San Francisco", "population": 873965 }
   ],
@@ -400,7 +400,7 @@ curl "https://cities-api.p.rapidapi.com/places/5128581/nearby?radius=50&class=P"
 
 ```json
 {
-  "data": [
+  "places": [
     { "id": 5099836, "name": "Jersey City", "distance": 9.2 },
     { "id": 5106292, "name": "Newark", "distance": 14.3 }
   ],
@@ -1018,19 +1018,25 @@ curl "https://cities-api.p.rapidapi.com/countries/US" \
 
 ```json
 {
-  "code": "US",
-  "code3": "USA",
+  "iso": "US",
+  "iso3": "USA",
+  "isoNumeric": "840",
+  "fips": "US",
   "name": "United States",
   "capital": "Washington",
+  "areaSqKm": 9629091,
   "population": 327167434,
-  "area": 9629091,
   "continent": "NA",
   "tld": ".us",
   "currencyCode": "USD",
   "currencyName": "Dollar",
-  "phoneCode": "1",
+  "phone": "1",
+  "postalCodeFormat": "#####-####",
+  "postalCodeRegex": "^\\d{5}(-\\d{4})?$",
   "languages": "en-US,es-US,haw,fr",
-  "neighbours": "CA,MX,CU"
+  "geonameid": 6252001,
+  "neighbours": "CA,MX,CU",
+  "equivalentFipsCode": null
 }
 ```
 
@@ -1327,7 +1333,7 @@ curl "https://cities-api.p.rapidapi.com/countries/g7" \
 {
   "organization": "G7",
   "description": "Group of Seven major advanced economies",
-  "data": [
+  "countries": [
     { "code": "US", "name": "United States" },
     { "code": "JP", "name": "Japan" },
     { "code": "DE", "name": "Germany" }
@@ -1398,12 +1404,11 @@ curl "https://cities-api.p.rapidapi.com/timezones/America-New_York" \
 
 ```json
 {
-  "id": "America/New_York",
+  "timezoneId": "America/New_York",
   "countryCode": "US",
   "gmtOffset": -5,
   "dstOffset": -4,
-  "rawOffset": -5,
-  "currentTime": "2026-01-06T08:30:00-05:00"
+  "rawOffset": -5
 }
 ```
 
@@ -1482,7 +1487,7 @@ curl "https://cities-api.p.rapidapi.com/postal-codes/US/10001" \
 
 ```json
 {
-  "data": [
+  "postalCodes": [
     {
       "postalCode": "10001",
       "placeName": "New York",
@@ -1843,4 +1848,4 @@ Check if a postal code exists.
 | 500 | Server Error |
 | 504 | Timeout — query took too long |
 
-**Note:** Empty results return `200` with `{ "data": [] }`, not `404`.
+**Note:** Empty results return `200` with an empty array (e.g., `{ "places": [] }`), not `404`.
