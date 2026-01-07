@@ -21,81 +21,122 @@ meta:
 
 # Introduction
 
-Welcome to the **Cities API** — a geographic data API built on a simple but powerful idea: **everything is a place**.
+Everything is a place. The Cities API gives you unified access to 13+ million geographic features — cities, lakes, mountains, airports, parks — through one consistent interface. Query any feature type the same way: search, filter, calculate distances, find what's nearby.
 
-Cities, lakes, mountains, airports, parks — they're all geographic features with coordinates, names, and relationships. Instead of treating each type differently, we give you one unified way to work with all 13+ million features in our database.
+Plus 252 countries, 418 timezones, and 1.8 million postal codes. **86 fast REST endpoints.**
 
-## What This Means For You
+## Everything is a Place
 
-**Mix and match any features.** Calculate the distance from a city to a lake. Find airports near a mountain. Get all features within a bounding box regardless of type.
+Most geo APIs treat cities, airports, and natural features as separate resources with different endpoints and parameters. We don't.
+
+This means you can do things other APIs can't:
+
+| Question | Other APIs | Cities API |
+|----------|-----------|------------|
+| Distance from a city to a lake? | ❌ Different endpoints, manual calculation | ✅ `/places/distance?from=5128581&to=5554072` |
+| Airports near a mountain? | ❌ No relationship between features | ✅ `/places/{mountainId}/nearby?class=S&featureCode=AIRP&radius=100` |
+| Timezone of the nearest city to coordinates? | ❌ Cities API only, no reverse geocoding | ✅ `/places/reverse?latitude=...&longitude=...` |
+| Distance between largest port and smallest park? | ❌ Ports and parks in different databases | ✅ Same `/places` endpoint, filter by type |
+| Sunrise time at a lake? | ❌ Astronomy APIs don't know about lakes | ✅ `/places/{lakeId}/sun-times?date=...` |
+| All features within a bounding box? | ❌ Need separate calls per feature type | ✅ `/places/bbox?north=...&south=...` |
+| Midpoint between an airport and a seaport? | ❌ No cross-type calculations | ✅ `/places/midpoint?ids={airport},{port}` |
+
+**Real examples that work right now:**
 
 ```shell
 # Distance from New York City to Lake Tahoe
-curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=5554072"
+curl "https://cities-api.p.rapidapi.com/places/distance?from=5128581&to=5554072" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY"
 
-# Find airports within 100km of Mount Rainier
-curl "https://cities-api.p.rapidapi.com/places/5808079/nearby?featureCode=AIRP&radius=100"
+# Nearest airport to Mount Everest
+curl "https://cities-api.p.rapidapi.com/places/1283416/nearby?class=S&featureCode=AIRP&radius=200" \
+  -H "X-RapidAPI-Key: YOUR_API_KEY"
 ```
 
-**Filter with precision, not limitations.** Use `class` to filter by category (populated places, water features, terrain) or `featureCode` for specific types (lakes, rivers, mountains, volcanoes). Exclude what you don't want with `excludeCodes`.
+One data model. Infinite possibilities.
 
-```shell
-# Cities in Japan (class P = populated places)
-curl "https://cities-api.p.rapidapi.com/places?country=JP&class=P"
+## Real-World Scenarios
 
-# Lakes in Switzerland
-curl "https://cities-api.p.rapidapi.com/places?country=CH&class=H&featureCode=LK"
+See how developers use the Cities API to build powerful features in just a few calls. These scenarios show the complete journey — starting from search (no magic codes) to getting exactly the data you need.
 
-# Mountains over 4000m in France
-curl "https://cities-api.p.rapidapi.com/places?country=FR&featureCode=MT&minElevation=4000"
-```
+### 1. Ski Trip Planning (Tourism)
 
-**Consistent responses everywhere.** Every list endpoint returns descriptive field names (`places`, `countries`, `timezones`, etc.) with `hasMore` and `nextPage` for pagination. Every error follows the same format. No surprises.
+**Goal:** Find the best Alps skiing destination with convenient access.
 
-## Quick Examples
+| Step | What | Endpoint | Result |
+|------|------|----------|--------|
+| 1 | Find Switzerland | `/places?class=A&q=Switzerland` | Country code → CH |
+| 2 | Discover mountain code | `/feature-codes?class=T` | Mountain → MT |
+| 3 | Find high peaks | `/places?country=CH&class=T&featureCode=MT&minElevation=3000` | Dom (4545m), Matterhorn (4478m) |
+| 4 | Check airport access | `/places/2659729/nearby?class=S&featureCode=AIRP&radius=100` | Sion Airport (37km) |
+| 5 | Find lodging | `/places/2659729/nearby?class=P&radius=30` | Breuil-Cervinia (5km, pop: 753) |
 
-Real scenarios showing how to combine endpoints:
+**How this works:** Start with a country name search, discover the right feature codes, then filter precisely by elevation. No guessing codes — the API tells you what's available.
 
-### Scenario 1: Planning a Trip to Tokyo
+### 2. Supply Chain Planning (Logistics)
 
-A user types "Tokyo" — show them everything they need:
+**Goal:** Set up import/export hub with sea and air access.
 
-| Step | Endpoint | Result |
-|------|----------|--------|
-| 1 | `/places?country=JP&class=P&q=Tokyo` | Find Tokyo → id: 1850147 |
-| 2 | `/places/1850147/local-info` | Time zone, currency (JPY), language |
-| 3 | `/places/1850147/airports` | Narita, Haneda airports |
-| 4 | `/places/1850147/sun-times?date=2026-03-15` | Sunrise 5:52, sunset 17:49 |
+| Step | What | Endpoint | Result |
+|------|------|----------|--------|
+| 1 | Discover city class | `/feature-classes` | Populated places → P |
+| 2 | Find major port city | `/places?class=P&q=Rotterdam&country=NL&minPopulation=100000` | Rotterdam (868k pop) |
+| 3 | Find nearby seaports | `/seaports?q=Rotterdam&limit=5` | Waalhaven Port, Rotterdam Port |
+| 4 | Find cargo airports | `/places/2747891/nearby?class=S&featureCode=AIRP&radius=80` | Rotterdam The Hague Airport (4.7km) |
 
-### Scenario 2: Distance from San Francisco to Lake Tahoe
+**How this works:** Discover available classes and codes first, search by name with population filters, then use proximity endpoints. The API guides you through what's available.
 
-User wants to know how far a lake is from a city:
+### 3. Digital Nomad Search (Remote Work)
 
-| Step | Endpoint | Result |
-|------|----------|--------|
-| 1 | `/places?country=US&class=P&q=San Francisco` | Find city → id: 5391959 |
-| 2 | `/places?country=US&class=H&q=Tahoe` | Find lake → id: 5554072 |
-| 3 | `/places/distance?from=5391959&to=5554072` | **290.4 km** |
+**Goal:** Find affordable cities with good infrastructure in Southeast Asia.
 
-### Scenario 3: Airports Near Mount Rainier
+| Step | What | Endpoint | Result |
+|------|------|----------|--------|
+| 1 | Find Thailand code | `/places?class=P&q=Bangkok&country=TH` | Bangkok → TH |
+| 2 | Discover city class | `/feature-classes` | Populated places → P |
+| 3 | Find mid-size Thai cities | `/places?country=TH&class=P&q=Chiang` | Chiang Mai (127k pop) |
+| 4 | Check timezone | `/places/1153671` | UTC+7 (Asia/Bangkok), THB currency |
+| 5 | Verify airport access | `/places/1153671/nearby?class=S&featureCode=AIRP&radius=100` | Chiang Mai Intl (3.2km) |
 
-Planning a hiking trip, need to find the closest airport:
+**How this works:** Find country codes from city searches, discover feature classes for filtering, then narrow down with population ranges. Local info gives timezone for remote meetings, and nearby airport means easy travel.
 
-| Step | Endpoint | Result |
-|------|----------|--------|
-| 1 | `/places?country=US&class=T&q=Rainier` | Find mountain → id: 5808079 |
-| 2 | `/places/5808079/nearby?featureCode=AIRP&radius=150` | Seattle-Tacoma (95km), Portland (143km) |
+### 4. Geographic Discovery Challenge
 
-### Scenario 4: Exploring Switzerland
+**Goal:** Find the climate zone and tomorrow's sunrise time at the nearest city to the exact opposite point of Mount Everest on Earth.
 
-Find all lakes and high mountains in a country:
+| Step | What | Endpoint | Result |
+|------|------|----------|--------|
+| 1 | Discover feature types | `/feature-classes` | Terrain → class T, Populated → class P |
+| 2 | Discover terrain codes | `/feature-codes?class=T` | Mountain → code MT |
+| 3 | Find Mount Everest | `/places?country=NP&class=T&featureCode=MT&minElevation=8000` | Mount Everest (id: 1283416), 8,848m |
+| 4 | Calculate antipode | `/places/1283416/antipode` | -27.99°S, -93.07°W (Pacific Ocean) |
+| 5 | Find nearest city | `/places/reverse?latitude=-27.99&longitude=-93.07` | San Juan Bautista, Chile (1,496 km) |
+| 6 | Get climate zone | `/places/3873019/climate-zone` | Cfa (Humid Subtropical) |
+| 7 | Get sunrise tomorrow | `/places/3873019/sun-times?date=2026-01-07` | Sunrise: 04:53 (America/Santiago) |
 
-| Step | Endpoint | Result |
-|------|----------|--------|
-| 1 | `/places?country=CH&class=H&featureCode=LK` | 500+ lakes |
-| 2 | `/places?country=CH&class=T&featureCode=MT&minElevation=4000` | 48 peaks over 4000m |
-| 3 | `/places?country=CH&class=T&q=Matterhorn` | Find Matterhorn → id: 2658434 |
-| 4 | `/places/2658434/nearby?class=P&radius=30` | Zermatt (6km), Täsch (12km) |
+**How this works:** Start by discovering what feature classes exist (terrain vs populated places), then find specific codes (mountains). Search for the highest peaks in Nepal to locate Everest. Use the antipode endpoint to calculate the exact opposite point on Earth. Find the nearest populated place using reverse geocoding. Finally, get climate classification and astronomical data for that remote Chilean island town.
+
+### 5. Nordic Border Challenge
+
+**Goal:** Find the Nordic country that's NOT in the EU, get a postal code from its second-largest city, find the nearest airport, then calculate the distance to the nearest EU neighbor's capital and compare their currencies, time zones, and electrical standards.
+
+| Step | What | Endpoint | Result |
+|------|------|----------|--------|
+| 1 | Discover continents | `/continents` | Europe → EU |
+| 2 | Find Nordic countries | `/countries?continent=EU&limit=100` | NO, SE, FI, DK, IS |
+| 3 | Check EU membership | `/countries/eu-members` | SE, FI, DK in EU → Norway (NO) not |
+| 4 | Discover city class | `/feature-classes` | Populated places → class P |
+| 5 | Find top Norwegian cities | `/places?country=NO&class=P&limit=5` | 1. Oslo (1.08M), 2. Bergen (294k) |
+| 6 | Get Bergen postal code | `/postal-codes/nearby?latitude=60.39&longitude=5.32` | 5003 Bergen |
+| 7 | Find nearest airport | `/places/3161732/nearby?class=S&featureCode=AIRP&radius=50` | Bergen Flesland (12.5 km) |
+| 8 | Get Norway's neighbors | `/countries/NO/neighbors` | FI, RU, SE (all except RU in EU) |
+| 9 | Find nearest EU capital | `/countries/SE` → `/places/distance` | Stockholm (720.1 km) |
+| 10 | Convert to miles | `/convert/distance?value=720.1&from=km&to=mi` | 447.45 miles |
+| 11 | Compare timezones | `/places/.../` for both | Europe/Oslo vs Europe/Stockholm = 0 hrs |
+| 12 | Compare currencies | Country endpoints | NOK (Krone) vs SEK (Krona) |
+| 13 | Compare electrical | `/countries/NO/electrical` + `/countries/SE/electrical` | Identical: 230V, 50Hz, C & F |
+
+**How this works:** Start by discovering continents, find Nordic countries in Europe. Use the EU membership endpoint to identify which Nordic country isn't in the EU (Norway). Discover the populated places class, then list Norwegian cities by population to find the second-largest (Bergen). Use coordinate-based postal code lookup, find the nearest airport, get Norway's neighbors to identify which are in the EU. Calculate distances to neighboring capitals, convert units, and compare local info and electrical standards.
 
 ## What's Included
 
@@ -121,6 +162,42 @@ Find all lakes and high mountains in a country:
 | **Reference Data** | Feature classes, feature codes, languages, currencies, continents, phone codes |
 | **Validation** | Coordinate validation, land/water detection, postal code validation |
 | **Unit Conversion** | Distance, elevation, area, temperature, speed, coordinates (metric ↔ imperial) |
+
+## Features
+
+- **13+ Million Places** — Cities, towns, lakes, rivers, mountains, airports, parks, and more
+- **Unified Interface** — Query any feature type with the same parameters: class, featureCode, country
+- **1.8 Million Postal Codes** — Full postal code database for 100+ countries
+- **86 Endpoints** — Comprehensive coverage for any location-based use case
+- **Multi-language Support** — Place names in 40+ languages
+- **Distance & Proximity** — Calculate distance between any two places, find what's nearby
+- **Hierarchy & Relationships** — Parent regions, child places, administrative divisions
+- **Timezone Intelligence** — Local time, UTC offsets, time differences, sunrise/sunset times
+- **Country Data** — 252 countries with neighbors, stats, electrical standards, driving sides
+- **Political & Economic Blocs** — EU, NATO, G7, G20, BRICS, OPEC, Commonwealth, Schengen, UN
+- **Geographic Calculations** — Bearing, antipode, midpoint, hemisphere, climate zones
+- **Elevation Filtering** — Find mountains over 4000m, highest cities, terrain features
+- **Weekly Updates** — Data refreshed weekly from GeoNames.org
+
+## Use Cases
+
+- **Travel Apps** — Find airports near any location, get local time, sunrise/sunset, currency
+- **Shipping & Logistics** — Calculate distances, find nearby postal codes, validate addresses
+- **Mapping & Search** — Reverse geocoding, bounding box queries, autocomplete
+- **International Business** — EU/NATO membership, electrical standards, date formats, phone codes
+- **Outdoor & Tourism** — Find lakes, mountains, parks; distances to natural features
+- **Analytics & BI** — Enrich datasets with geographic metadata and hierarchies
+- **E-commerce** — Validate addresses, estimate delivery zones, currency lookups
+- **Weather & Climate** — Match coordinates to places, timezones, and climate zones
+
+## Why Choose This API?
+
+- **Complete Coverage** — Not just cities. Lakes, mountains, airports, parks — 13M+ features
+- **Unified Interface** — One API pattern for all geographic features
+- **Fast Response Times** — Optimized SQLite with sub-100ms queries
+- **Simple Pricing** — No hidden fees, predictable costs
+- **Clear Limits** — No rate surprises, no unexpected throttling
+- **Reliable** — High uptime infrastructure
 
 # Authentication
 
